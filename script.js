@@ -152,7 +152,7 @@ function searchPokemon() {
     pokemonCards.forEach(card => {
         const pokemonName = card.querySelector('#pokemon_name').innerText.toLowerCase();
         const pokemonId = card.querySelector('.pokemon-title').innerText.split('#')[1];
-        if (searchInput.value.toString().length >= 3 || searchInput.value) {
+        if (searchInput.value.length >= 3) {
             if (pokemonName.includes(searchInput.value.toLowerCase()) || pokemonId.includes(searchInput.value.toLowerCase())) {
                 card.style.display = 'block';
             } else {
