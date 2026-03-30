@@ -1,0 +1,38 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+.site {
+    min-height: 100dvh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.df-c-c {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.df-spb-c {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.df-c-c-c {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.df-c-st-c {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+}

@@ -1,0 +1,42 @@
+header {
+    background-color: rgb(0, 5, 93);
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10px;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-header-footer {
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1920px;
+
+    padding: 5px 20px;
+}
+
+.content-limit {
+    display: flex;
+    flex-direction: column;
+    max-width: 1920px;
+    padding: 0 20px;
+}
+
+footer {
+    background-color: rgb(0, 3, 50);
+    height: 50px;
+    color: white;
+}
+
+.d-none {
+    display: none;
+}
