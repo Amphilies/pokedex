@@ -1,21 +1,22 @@
 header {
-    background-color: blue;
+    background-color: turquoise;
     height: 50px;
+    display: flex;
+    justify-content: center;
 }
 
 main {
-    background-color: turquoise;
+    background-color:gold ;
 }
 
 .content-limit {
-    display: flex;
-    flex-direction: column;
+    width: 1920px;
     max-width: 1920px;
     padding: 0 20px;
 }
 
 footer {
-    background-color: blue;
+    background-color: turquoise;
     height: 50px;
 }
 
