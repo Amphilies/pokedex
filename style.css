@@ -1,0 +1,62 @@
+/* Pokemon Showcase */
+
+.container-pokemon-showcase {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    gap: 20px;
+}
+
+.pokemon-showcase {
+    height: 250px;
+    width: 200px;
+    border: solid rgb(70, 82, 249) 5px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.pokemon-showcase:hover {
+    filter: drop-shadow(10px 10px 15px rgb(49, 255, 245));
+}
+
+.pokemon-showcase:hover>.pokemon-showcase-img-container img {
+    height: 90%;
+    width: 90%;
+    cursor: pointer;
+}
+
+.pokemon-showcase-header {
+    background-color: #363636;
+    color: white;
+    height: 40px;
+    width: 100%;
+    font-size: 20px;
+    padding-left: 15px;
+    border-radius: 5px;
+
+}
+
+.pokemon-showcase-img-container {
+    background-color: greenyellow;
+    height: calc(100% - 50px - 28px);
+    width: 100%;
+}
+
+.pokemon-showcase-img-container img {
+    height: 70%;
+    width: 70%;
+}
+
+.pokemon-showcase-type-container {
+    background-color: darkgreen;
+    height: 50px;
+    width: 100%;
+    border-radius: 5px;
+}
+
+.pokemon-showcase-type-container img {
+    /* height: 50px; */
+    width: 40px;
+}
+
+/* Pokemon Card */

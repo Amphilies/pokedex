@@ -12,22 +12,32 @@
     <script src="./script.js"></script>
 </head>
 
-<body>
+<body onload="init()">
     <div class="site">
         <header>
             <div class="df-spb-c content-limit">
-                <h2>Pokedex</h2>
-                <div>
-                    <input type="text">
-                    <button>Search</button>
+                <div class="container-header-left">
+                    <img class="header-logo" src="./img/editor1775378963680.png" alt="">
+                    <!-- <div class="header-logo"></div> -->
+                    <div class="container-header-title">
+                        <img class="header-title-icon" src="./img/Poké_Ball_icon.svg.png" alt=""><h3 class="header-title">P</h3><h3 class="header-title">kedex</h3>
+                    </div>
+                </div>
+                <div class="container-header-search">
+                    <div class="designed-search-field">
+                        <input class="search-field" type="search" placeholder="Search Name or Number">
+                        <button class="search-button"></button>
+                    </div>
                 </div>
             </div>
         </header>
         <main>
-            <div class="df-spb-c content-limit"></div>
+            <div class="container-pokemon-showcase content-limit" id="pokemon_showcase">
+                <!-- pokemon showcase -->
+            </div>
         </main>
         <footer>
-            <div>
+            <div class="content-limit">
                 <p>&copy; 2023 Pokedex</p>
             </div>
         </footer>

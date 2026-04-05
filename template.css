@@ -1,23 +1,137 @@
 header {
-    background-color: turquoise;
-    height: 50px;
+    background-color: #363636;
+    height: 150px;
     display: flex;
     justify-content: center;
 }
 
+.container-header-left {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    height: 150px;
+    position: relative;
+    overflow: hidden;
+}
+
+.header-logo {
+    width: 400px;
+    padding-top: 180px;
+    rotate: -15deg;
+}
+
+.container-header-title {
+    height: 100%;
+    display: flex;
+    align-items: end;
+    gap: 50px;
+    padding-bottom: 50px;
+}
+
+.header-title {
+    margin: 0;
+    padding: 0;
+    font-size: 80px;
+    color: black;
+    transform: translateY(10px);
+    text-shadow: 2px 0 white, -2px 0 white, 0 2px white, 0 -2px white,
+               1px 1px white, -1px -1px white, 1px -1px white, -1px 1px white;
+}
+
+.header-title-icon {
+    width: 100px;
+    transform: translate(170px, 20px);
+
+    animation: bounce 2s linear 0s;
+    /* animation: rotate 2s ease-in-out infinite; */
+}
+
+@keyframes bounce {
+	0% {
+    transform: translate(170px, -20px);
+  }
+	20% {
+    transform: translate(170px, 20px);
+  }
+	40% {
+    transform: translate(170px, -10px);
+  }
+	60% {
+    transform: translate(170px, 20px);
+  }
+	80% {
+    transform: translate(170px, 10px);
+  }
+	100% {
+    transform: translate(170px, 20px);
+  }
+}
+
+.container-header-search {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-bottom: 5px;
+    gap: 10px;
+    padding-top: 100px;
+
+}
+
+.designed-search-field {
+    background-color: white;
+    display: flex;
+    border-radius: 50px;
+}
+
+.search-field {
+    border-radius: 50px;
+}
+
+.search-button {
+    background-color: #934bf0;
+    background-image: url("./img/removebackground1775382129381.png");
+    background-size: 40px;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    border-radius: 0px 20px 20px 0px;
+    width: 100px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+input.search-field {
+    border: 1px solid white;
+    width: 100%;
+    padding: 9px 4px 9px 25px;
+}
+
+input,
+input::placeholder {
+    color:#934bf0;
+    font-weight: bold;
+}
+
 main {
-    background-color:gold ;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: start;
 }
 
 .content-limit {
-    width: 1920px;
+    width: 100vw;
     max-width: 1920px;
     padding: 0 20px;
 }
 
 footer {
-    background-color: turquoise;
+    background-color: #b17df4;
     height: 50px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .d-none {
