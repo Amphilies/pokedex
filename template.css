@@ -114,9 +114,10 @@ input::placeholder {
 
 main {
     background-color: black;
+    gap: 50px;
     display: flex;
-    justify-content: center;
-    align-items: start;
+    align-items: center;
+    flex-direction: column;
 }
 
 .content-limit {

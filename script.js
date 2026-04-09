@@ -10,62 +10,61 @@ let test = 0;
 
 function init() {
     renderPokemonShowcase();
+
 }
 
-async function renderPokemonShowcase() {
-    test;
-    let responsePokemonLimit = await fetch(POKEMON_BASE_URL + limit + limitValue + offset + offsetValue);
-    let pokemonImage = POKEMON_IMG_URL;
-    let pokemonLimit = await responsePokemonLimit.json();
-    let responsePokemon = await fetch(POKEMON_BASE_URL + (1 + test));
-    let pokemon = await responsePokemon.json();
-    console.log(test);
-    
-    
-    for (let index = 0; index < limitValue; index++) {
-
-        let pokemonName = pokemonLimit.results[index].name;
+function renderPokemonShowcase() {
+    for (let index = 0; index < 500; index++) {
+        loadPokemonData(index);
         document.getElementById('pokemon_showcase').innerHTML += `
                 <div class="b df-c-c-c pokemon-showcase">
                     <div class="pokemon-showcase-header df-spb-c">
-                        <h3># ${index + 1}</h3>
-                        <h3>${pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1)}</h3>
+                        <h3 id="pokemon_id${index}"></h3>
+                        <h3 id="pokemon_name${index}"></h3>
                         <div></div>
                     </div>
                     <div class="pokemon-showcase-img-container df-c-c">
-                        <img src="${pokemonImage + (index + 1)}.png" alt="Pokemon">
+                        <img id="pokemon_image${index}" src="" alt="Pokemon">
                     </div>
                     <div class="df-spa-c pokemon-showcase-type-container">
-
-                        ${renderPokemonTypes(pokemon)}
-
+                        <img id="type_icon1_${index}" src="" alt="">
+                        <img id="type_icon2_${index}" src="" alt="">
                     </div>
                 </div>
         `;
-        test++;
-        console.log(test);
     }
-    
-    
 }
 
-function renderPokemonTypes(pokemon) {
-    let typeRef = '';
+function loadPokemonData(index) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let response = await fetch(POKEMON_BASE_URL + (index + 1));
+            let pokemon = await response.json();
 
-    for (let typeIndex = 0; typeIndex < pokemon.types.length; typeIndex++) {
-        let pokemonTypeIcon = pokemon.types[typeIndex].type.name
-        typeRef += getElementPokemonTypes(pokemonTypeIcon);
-    }
+            document.getElementById(`pokemon_id${index}`).innerText = `#${pokemon.id}`;
+            document.getElementById(`pokemon_name${index}`).innerText = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
+            document.getElementById(`pokemon_image${index}`).src = POKEMON_IMG_URL + pokemon.id + ".png";
+            for (let typeIndex = 0; typeIndex < pokemon.types.length; typeIndex++) {
+                let pokemonTypeIcon = pokemon.types[typeIndex].type.name;
+                document.getElementById(`type_icon${typeIndex + 1}_${index}`).src = `./img/${pokemonTypeIcon}.svg`;
+                if (!pokemon.types[1]) {
+                    document.getElementById(`type_icon2_${index}`).classList.add("d-none");
+                }
+            }
 
-    return typeRef;
+            resolve();
+        } catch (error) {
+            reject(error);
+        }
+    });
 }
 
-function getElementPokemonTypes(pokemonTypeIcon) {
-    return `
-        <img class="type-icon" src="./img/${pokemonTypeIcon}.svg" alt="">`
+function loadMorePokemon() {
+    offsetValue += 10;
+    limitValue += 10;
+    addMorePokemon();
 }
-// loadPokemonShowcase
-// renderPokemonTypes
+
 // loadMorePokemon
 
 // openPokemonCard
