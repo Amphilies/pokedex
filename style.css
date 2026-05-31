@@ -77,24 +77,39 @@
 /* Pokemon Card */
 
 .pokemon-card {
+    background-color: rgba(0, 0, 0, 0.316);
+    min-height: 100%;
+    min-width: 100%;
+}
+
+.container-pokemon-card {
     background-color: white;
     height: 700px;
     width: 500px;
+    padding: 50px;
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
 }
 
 .pokemon-card-img-container {
-    background-image: url(./img/pokemon-team-instinct-yellow-lightning-sparks-6g99bs0aodpumjpw\ \(1\).gif);
+    /* background-image: url(./img/pokemon-team-instinct-yellow-lightning-sparks-6g99bs0aodpumjpw\ \(1\).gif); */
     background-position: center;
     background-size: cover;
     border: solid black 1px;
-    height: 500px;
+    height: 400px;
     width: 100%;
     position: relative;
 }
 
 .button-switch {
     background-color: rgba(0, 255, 255, 0.108);
-    height: 500px;
+    height: 400px;
 }
 
 .button-switch:hover {
