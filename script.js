@@ -5,22 +5,20 @@ const offset = "&offset=";
 let limitValue = 10;
 let offsetValue = 0;
 
-let pokemonLimit = 51;
-let currentPokemonLimit = 40;
+let pokemonLimit = 41;
+let currentPokemonLimit = 0;
 let currentPokemonIndex;
 
 
 function init() {
     renderPokemonShowcase();
 }
-
 function renderPokemonShowcase() { // index < 1024
     for (let index = 0; index < 40; index++) {
         loadPokemonData(index);
         currentPokemonIndex = index;
     }
 }
-
 function loadMorePokemon() {
     currentPokemonLimit += 40;
     pokemonLimit += 40;
@@ -29,7 +27,6 @@ function loadMorePokemon() {
         document.getElementById(`showcase_id${index}`).classList.remove("d-none");
     }
 }
-
 function loadPokemonData(index) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -51,6 +48,20 @@ function loadPokemonData(index) {
             reject(error);
         }
     });
+}
+
+
+function openPokemonCard(pokemonIndex) {
+    loadPokemonCardData(pokemonIndex);
+
+    setTimeout(() => {
+        document.getElementById('pokemon_card').showModal();
+        document.getElementById('body').classList.add("no-scroll");
+    }, 100);
+}
+function closePokemonCard() {
+    document.getElementById('pokemon_card').close();
+    document.getElementById('body').classList.remove("no-scroll");
 }
 function loadPokemonCardData(pokemonIndex) {
     return new Promise(async (resolve, reject) => {
@@ -74,40 +85,6 @@ function loadPokemonCardData(pokemonIndex) {
         }
     });
 }
-
-function openPokemonCard(pokemonIndex) {
-    loadPokemonCardData(pokemonIndex);
-
-    setTimeout(() => {
-        document.getElementById(`pokemon_card`).showModal();
-    }, 100);
-}
-
-function closePokemonCard() {
-    document.getElementById('pokemon_card').close();
-}
-
-
-function generate() {
-    for (let i = 40; i < 1024; i++) {
-        document.getElementById('pokemon_showcase').innerHTML += `
-                    <div id="showcase_id${i}" class="b df-c-c-c pokemon-showcase d-none">
-                        <div class="pokemon-showcase-header df-spb-c">
-                            <h3 id="pokemon_id${i}"></h3>
-                            <h3 id="pokemon_name${i}"></h3>
-                            <div></div>
-                        </div>
-                        <div onclick="openPokemonCard(${i})" class="pokemon-showcase-img-container df-c-c">
-                            <img id="pokemon_image${i}" src="" alt="Pokemon">
-                        </div>
-                        <div class="df-spa-c pokemon-showcase-type-container">
-                            <img id="type_icon1_${i}" src="" alt="">
-                            <img id="type_icon2_${i}" src="" alt="">
-                        </div>
-                    </div>`;
-    }
-}
-
 
 // closePokemonCard
 // loadPokemonDetails

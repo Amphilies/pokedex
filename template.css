@@ -138,3 +138,7 @@ footer {
 .d-none {
     display: none;
 }
+
+.no-scroll {
+    overflow: hidden;
+}

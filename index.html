@@ -12,7 +12,7 @@
     <script src="./script.js"></script>
 </head>
 
-<body onload="init()">
+<body id="body" onload="init()">
     <div class="site">
         <header>
             <div class="df-spb-c content-limit">
@@ -14384,7 +14384,7 @@
                     </div>
                     <br>
                     <div class="df-c-c pokemon-card-img-container">
-                        <button class="button-switch button-previous"><-< /button>
+                        <button class="button-switch button-previous"><-</button>
                                 <img id="pokemon_card_image" class="pokemon-card-img"
                                     src="./img/cute_pikachu_no_background.png" alt="">
                                 <button class="button-switch button-next">-></button>
@@ -14415,44 +14415,3 @@
         </footer>
     </div>
 </body>
-
-</html>
-<div class="container-pokemon-showcase content-limit" id="pokemon_showcase">
-
-    <div class="container-pokemon-showcase content-limit" id="pokemon_showcase">
-    </div>
-    <div>
-        <button class="load-more-button" onclick="loadMorePokemon()">Load more</button>
-    </div>
-    <dialog id="pokemon_card" class="pokemon-card">
-        <div class="container-pokemon-card">
-            <div class="df-spb-c">
-                <div id="pokemon_card_id"></div>
-                <h3 id="pokemon_card_name"></h3>
-                <button onclick="closePokemonCard()">X</button>
-            </div>
-            <br>
-            <div class="df-c-c pokemon-card-img-container">
-                <button class="button-switch button-previous">&lt;-&lt; /button&gt;
-                    <img id="pokemon_card_image" class="pokemon-card-img" src="./img/cute_pikachu_no_background.png"
-                        alt="">
-                </button><button class="button-switch button-next">-&gt;</button>
-            </div> <br>
-            <div>
-                <div>Statistics</div>
-                <br>
-                <div>Health Points</div>
-                <div></div>
-                <div>Attack</div>
-                <div></div>
-                <div>Defense</div>
-                <div></div>
-                <div>Speed</div>
-                <div></div>
-                <div>Special Attack</div>
-                <div></div>
-                <div>Special Defense</div>
-                <div></div>
-            </div>
-        </div>
-    </dialog>
