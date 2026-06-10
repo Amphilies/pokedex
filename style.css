@@ -5,6 +5,7 @@
     flex-wrap: wrap;
     padding-top: 20px;
     gap: 20px;
+    justify-content: center;
 }
 
 .pokemon-showcase {
@@ -23,6 +24,11 @@
     height: 90%;
     width: 90%;
     cursor: pointer;
+}
+
+.pokemon-title {
+    color: white;
+    font-size: 20px;
 }
 
 .pokemon-showcase-header {
@@ -55,7 +61,6 @@
 }
 
 .pokemon-showcase-type-container img {
-    /* height: 50px; */
     width: 38px;
 }
 
@@ -77,17 +82,16 @@
 /* Pokemon Card */
 
 .pokemon-card {
-    background-color: rgba(0, 0, 0, 0.316);
+    background-color: rgba(0, 0, 0, 0.771);
     min-height: 100%;
     min-width: 100%;
 }
 
 .container-pokemon-card {
-    background-color: white;
-    height: 700px;
+    background-color: rgb(0, 0, 0);
     width: 500px;
-    padding: 50px;
-
+    border: solid rgb(70, 82, 249) 10px;
+    border-radius: 50px;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -97,10 +101,25 @@
     transform: translateX(-50%) translateY(-50%);
 }
 
+.pokemon-card-header {
+    background-color: rgb(57, 57, 57);
+    height: 70px;
+    width: 100%;
+    border-radius: 40px 40px 0px 0px;
+    padding: 0px 50px 0px 50px;
+}
+
+.pokemon-card-title {
+    color: white;
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+}
+
 .pokemon-card-img-container {
     /* background-image: url(./img/pokemon-team-instinct-yellow-lightning-sparks-6g99bs0aodpumjpw\ \(1\).gif); */
+    /* background-color: yellow; */
     background-position: center;
-    background-size: cover;
     border: solid black 1px;
     height: 400px;
     width: 100%;
@@ -108,27 +127,159 @@
 }
 
 .button-switch {
-    background-color: rgba(0, 255, 255, 0.108);
-    height: 400px;
+    background-color: #8c28ff;
+    cursor: pointer;
 }
 
 .button-switch:hover {
-    background-color: #7b3bc424;
+    background-color: #b370ff;
     cursor: pointer;
 }
 
 .button-previous {
     left: 0px;
     position: absolute;
+    width: 50px;
 }
 
 .button-next {
     right: 0px;
     position: absolute;
+    width: 50px;
+}
+
+.switch-pokemon {
+    border-radius: 50%;
+}
+
+.switch-pokemon-rotated {
+    rotate: 180deg;
 }
 
 .pokemon-card-img {
     height: 100%;
     width: 500px;
     opacity: 100%;
+}
+
+.close-button {
+    border-radius: 50%;
+    width: 30px;
+}
+
+.close-button:hover {
+    cursor: pointer;
+}
+
+.container-statistics {
+    padding: 0 20px 30px 20px;
+}
+
+.statistics-title {
+    color: white;
+}
+
+/* Responsive Styles */
+
+@media (max-width: 845px) {
+    .pokemon-showcase {
+        height: auto;
+        width: 150px;
+        margin-bottom: 20px;
+    }
+
+    .pokemon-card {
+        width: 90%;
+    }
+
+    .pokemon-title {
+        font-size: 12px;
+        padding: 0;
+    }
+
+    .pokemon-showcase:hover>.pokemon-showcase-img-container img {
+        height: 70%;
+        width: 70%;
+        cursor: pointer;
+    }
+
+    .pokemon-showcase-type-container img {
+        width: 30px;
+    }
+
+    .container-pokemon-card {
+        height: 850px;
+        width: 350px;
+        top: 50%;
+    }
+
+    .pokemon-card-header {
+        padding: 0px 20px 0px 20px;
+    }
+
+    .pokemon-card-title {
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    .pokemon-card-img-container {
+        height: 400px;
+        width: 100%;
+    }
+
+    .pokemon-card-img {
+        height: 350px;
+        width: 350px;
+    }
+}
+
+@media (max-width: 375px) {
+    .pokemon-showcase {
+        height: auto;
+        width: 120px;
+        margin-bottom: 20px;
+    }
+
+    .pokemon-card {
+        width: 90%;
+    }
+
+    .pokemon-title {
+        font-size: 10px;
+    }
+
+    .pokemon-showcase:hover>.pokemon-showcase-img-container img {
+        height: 70%;
+        width: 70%;
+        cursor: pointer;
+    }
+
+    .pokemon-showcase-type-container img {
+        width: 24px;
+    }
+
+    .container-pokemon-card {
+        height: 750px;
+        width: 300px;
+        top: 50%;
+    }
+
+    .pokemon-card-header {
+        padding: 0px 20px 0px 20px;
+    }
+
+    .pokemon-card-title {
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .pokemon-card-img-container {
+        height: 300px;
+        width: 100%;
+    }
+
+    .pokemon-card-img {
+        height: 250px;
+        width: 250px;
+    }
 }

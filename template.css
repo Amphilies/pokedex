@@ -6,6 +6,7 @@ header {
 }
 
 .container-header-left {
+    background-color: red;
     display: flex;
     align-items: center;
     gap: 50px;
@@ -17,7 +18,7 @@ header {
 .header-logo {
     width: 400px;
     padding-top: 180px;
-    rotate: -15deg;
+    rotate: 345deg;
 }
 
 .container-header-title {
@@ -141,4 +142,8 @@ footer {
 
 .no-scroll {
     overflow: hidden;
+}
+
+@media (max-width: 1320px) {
+
 }
