@@ -50,9 +50,9 @@ function loadPokemonData(index) {
         }
     });
 }
-
 function openPokemonCard(pokemonIndex) {
     loadPokemonCardData(pokemonIndex);
+    loadPokemonCardStats(pokemonIndex);
     currentPokemonIndex = pokemonIndex;
 
     setTimeout(() => {
@@ -93,17 +93,17 @@ function loadPokemonCardStats(pokemonIndex) {
             let pokemon = await response.json();
 
             document.getElementById('hp_progress').style.width = `${pokemon.stats[0].base_stat}%`;
-            document.getElementById('hp_progress').innerText = `${pokemon.stats[0].base_stat}%`;
+            document.getElementById('hp_progress').innerText = `${pokemon.stats[0].base_stat}`;
             document.getElementById('attack_progress').style.width = `${pokemon.stats[1].base_stat}%`;
-            document.getElementById('attack_progress').innerText = `${pokemon.stats[1].base_stat}%`;
+            document.getElementById('attack_progress').innerText = `${pokemon.stats[1].base_stat}`;
             document.getElementById('defense_progress').style.width = `${pokemon.stats[2].base_stat}%`;
-            document.getElementById('defense_progress').innerText = `${pokemon.stats[2].base_stat}%`;
+            document.getElementById('defense_progress').innerText = `${pokemon.stats[2].base_stat}`;
             document.getElementById('special_attack_progress').style.width = `${pokemon.stats[3].base_stat}%`;
-            document.getElementById('special_attack_progress').innerText = `${pokemon.stats[3].base_stat}%`;
+            document.getElementById('special_attack_progress').innerText = `${pokemon.stats[3].base_stat}`;
             document.getElementById('special_defense_progress').style.width = `${pokemon.stats[4].base_stat}%`;
-            document.getElementById('special_defense_progress').innerText = `${pokemon.stats[4].base_stat}%`;
+            document.getElementById('special_defense_progress').innerText = `${pokemon.stats[4].base_stat}`;
             document.getElementById('speed_progress').style.width = `${pokemon.stats[5].base_stat}%`;
-            document.getElementById('speed_progress').innerText = `${pokemon.stats[5].base_stat}%`;
+            document.getElementById('speed_progress').innerText = `${pokemon.stats[5].base_stat}`;
 
             resolve();
         } catch (error) {
@@ -111,7 +111,6 @@ function loadPokemonCardStats(pokemonIndex) {
         }
     });
 }
-
 function previousPokemon() {
     if (currentPokemonIndex <= 0) {
         currentPokemonIndex = 1024;
@@ -119,6 +118,7 @@ function previousPokemon() {
         currentPokemonIndex--;
     }
     loadPokemonCardData(currentPokemonIndex);
+    loadPokemonCardStats(currentPokemonIndex);
 }
 function nextPokemon() {
     if (currentPokemonIndex == 1024) {
@@ -127,5 +127,12 @@ function nextPokemon() {
         currentPokemonIndex++;
     }
     loadPokemonCardData(currentPokemonIndex);
+    loadPokemonCardStats(currentPokemonIndex);
 }
-// loadPokemonDetails
+
+async function loadstatistics() {
+    let response = await fetch(POKEMON_BASE_URL + (currentPokemonIndex + 1));
+    let pokemon = await response.json();
+
+    console.log(pokemon);
+}
