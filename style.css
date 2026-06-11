@@ -1,4 +1,23 @@
 /* Pokemon Showcase */
+.container-loading-spinner {
+    height: 100%;
+    width: 100%;
+}
+.loading-spinner {
+    height: 200px;
+    /* width: 100%; */
+    animation: spinner 3s linear infinite;
+}
+
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
 .container-pokemon-showcase {
     display: flex;
@@ -43,7 +62,6 @@
 }
 
 .pokemon-showcase-img-container {
-    background-color: greenyellow;
     height: calc(100% - 50px - 28px);
     width: 100%;
 }

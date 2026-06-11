@@ -1,42 +1,40 @@
-const POKEMON_BASE_URL = "https://pokeapi.co/api/v2/pokemon/";
+const POKEMON_BASE_URL = "https://pokeapi.co/api/v2/";
 const POKEMON_IMG_URL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
 const limit = "?limit=";
 const offset = "&offset=";
-let limitValue = 10;
+let limitValue = 40;
 let offsetValue = 0;
 
-let pokemonLimit = 41;
+let pokemonLimit = 40;
 let currentPokemonLimit = 0;
 currentPokemonIndex = 0;
 
 
-function init() {
-    renderPokemonShowcase();
+async function init() {
+    startLoadingSpinner()
+    await renderPokemonShowcase();
+    stopLoadingSpinner();
+    loadstatistics();
 }
 
-function renderPokemonShowcase() { // index < 1024
-    for (let index = 0; index < 40; index++) {
+async function renderPokemonShowcase() { // index < 1024
+    for (let index = currentPokemonLimit; index < pokemonLimit; index++) {
         loadPokemonData(index);
         currentPokemonIndex = index;
     }
 }
-function loadMorePokemon() {
-    currentPokemonLimit += 40;
-    pokemonLimit += 40;
 
-    for (let index = currentPokemonLimit; index < pokemonLimit; index++) {
-        document.getElementById(`showcase_id${index}`).classList.remove("d-none");
-    }
-}
 function loadPokemonData(index) {
     return new Promise(async (resolve, reject) => {
         try {
-            let response = await fetch(POKEMON_BASE_URL + (index + 1));
+            let response = await fetch(POKEMON_BASE_URL + "pokemon/" + (index + 1));
             let pokemon = await response.json();
 
             document.getElementById(`pokemon_id${index}`).innerText = `#${pokemon.id}`;
             document.getElementById(`pokemon_name${index}`).innerText = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
             document.getElementById(`pokemon_image${index}`).src = POKEMON_IMG_URL + pokemon.id + ".png";
+            document.getElementById(`showcase_img${index}`).classList.add(pokemon.types[0].type.name);
+            
             for (let typeIndex = 0; typeIndex < pokemon.types.length; typeIndex++) {
                 let pokemonTypeIcon = pokemon.types[typeIndex].type.name;
                 document.getElementById(`type_icon${typeIndex + 1}_${index}`).src = `./img/${pokemonTypeIcon}.svg`;
@@ -49,6 +47,15 @@ function loadPokemonData(index) {
             reject(error);
         }
     });
+}
+function loadMorePokemon() {
+    currentPokemonLimit += 40;
+    pokemonLimit += 40;
+
+    for (let index = currentPokemonLimit; index < pokemonLimit; index++) {
+        document.getElementById(`showcase_id${index}`).classList.remove("d-none");
+    }
+    init();
 }
 function openPokemonCard(pokemonIndex) {
     loadPokemonCardData(pokemonIndex);
@@ -67,12 +74,13 @@ function closePokemonCard() {
 function loadPokemonCardData(pokemonIndex) {
     return new Promise(async (resolve, reject) => {
         try {
-            let response = await fetch(POKEMON_BASE_URL + (pokemonIndex + 1));
+            let response = await fetch(POKEMON_BASE_URL + "pokemon/" + (pokemonIndex + 1));
             let pokemon = await response.json();
-
             document.getElementById('pokemon_card_id').innerText = `#${pokemon.id}`;
             document.getElementById('pokemon_card_name').innerText = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
             document.getElementById('pokemon_card_image').src = POKEMON_IMG_URL + pokemon.id + ".png";
+            // document.getElementById('card_image').classList.add(pokemon.types[0].type.name);
+            document.getElementById('card_image').classList.replace(document.getElementById('card_image').classList[1], pokemon.types[0].type.name);
             for (let typeIndex = 0; typeIndex < pokemon.types.length; typeIndex++) {
                 let pokemonTypeIcon = pokemon.types[typeIndex].type.name;
                 document.getElementById(`type_icon${typeIndex + 1}_${pokemonIndex}`).src = `./img/${pokemonTypeIcon}.svg`;
@@ -89,7 +97,7 @@ function loadPokemonCardData(pokemonIndex) {
 function loadPokemonCardStats(pokemonIndex) {
     return new Promise(async (resolve, reject) => {
         try {
-            let response = await fetch(POKEMON_BASE_URL + (pokemonIndex + 1));
+            let response = await fetch(POKEMON_BASE_URL + "pokemon/" + (pokemonIndex + 1));
             let pokemon = await response.json();
 
             document.getElementById('hp_progress').style.width = `${pokemon.stats[0].base_stat}%`;
@@ -130,9 +138,23 @@ function nextPokemon() {
     loadPokemonCardStats(currentPokemonIndex);
 }
 
+function startLoadingSpinner() {
+    document.getElementById('loading_spinner').classList.remove('d-none');
+    document.getElementById('pokemon_showcase').classList.add('d-none');
+    document.getElementById('load_more_button').classList.add('d-none');
+}
+function stopLoadingSpinner() {
+    setTimeout(() => {
+        document.getElementById('loading_spinner').classList.add('d-none');
+        document.getElementById('pokemon_showcase').classList.remove('d-none');
+        document.getElementById('load_more_button').classList.remove('d-none');
+    }, 2000);
+}
+
 async function loadstatistics() {
-    let response = await fetch(POKEMON_BASE_URL + (currentPokemonIndex + 1));
+    let response = await fetch(POKEMON_BASE_URL + "pokemon/" + (0 + 1));
     let pokemon = await response.json();
 
     console.log(pokemon);
 }
+
