@@ -23,7 +23,6 @@ async function renderPokemonShowcase() { // index < 1024
         currentPokemonIndex = index;
     }
 }
-
 function loadPokemonData(index) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -34,7 +33,7 @@ function loadPokemonData(index) {
             document.getElementById(`pokemon_name${index}`).innerText = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
             document.getElementById(`pokemon_image${index}`).src = POKEMON_IMG_URL + pokemon.id + ".png";
             document.getElementById(`showcase_img${index}`).classList.add(pokemon.types[0].type.name);
-            
+
             for (let typeIndex = 0; typeIndex < pokemon.types.length; typeIndex++) {
                 let pokemonTypeIcon = pokemon.types[typeIndex].type.name;
                 document.getElementById(`type_icon${typeIndex + 1}_${index}`).src = `./img/${pokemonTypeIcon}.svg`;
@@ -48,14 +47,16 @@ function loadPokemonData(index) {
         }
     });
 }
-function loadMorePokemon() {
+async function loadMorePokemon() {
     currentPokemonLimit += 40;
     pokemonLimit += 40;
 
     for (let index = currentPokemonLimit; index < pokemonLimit; index++) {
         document.getElementById(`showcase_id${index}`).classList.remove("d-none");
     }
-    init();
+    startLoadingSpinner()
+    await renderPokemonShowcase();
+    stopLoadingSpinner();
 }
 function openPokemonCard(pokemonIndex) {
     loadPokemonCardData(pokemonIndex);
@@ -145,10 +146,10 @@ function startLoadingSpinner() {
 }
 function stopLoadingSpinner() {
     setTimeout(() => {
-        document.getElementById('loading_spinner').classList.add('d-none');
-        document.getElementById('pokemon_showcase').classList.remove('d-none');
-        document.getElementById('load_more_button').classList.remove('d-none');
-    }, 2000);
+    document.getElementById('loading_spinner').classList.add('d-none');
+    document.getElementById('pokemon_showcase').classList.remove('d-none');
+    document.getElementById('load_more_button').classList.remove('d-none');
+    }, 1000);
 }
 
 async function loadstatistics() {
