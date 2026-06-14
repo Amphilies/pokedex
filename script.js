@@ -179,8 +179,6 @@ function closePokemonCard() {
     document.getElementById('body').classList.remove("no-scroll");
 }
 
-
-
 async function searchPokemon() {
     startLoadingSpinner();
     document.getElementById('pokemon_showcase').innerHTML = "";
@@ -197,7 +195,6 @@ async function searchPokemon() {
             return alert("min. 3 letters");
         }
         if (data.name.includes(searchInput)) {
-            searchProgress(data.id, data.name);
             generateSearchingPokemon(searchIndex);
             document.getElementById(`pokemon_id${searchIndex}`).innerText = `#${convertPokemonId(data)}`;
             document.getElementById(`pokemon_name${searchIndex}`).innerText = pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1);
@@ -215,12 +212,6 @@ async function searchPokemon() {
         }
     }
     stopLoadingSpinner();
-}
-
-
-
-function searchProgress(id, name) {
-    console.log(id + " " + name);
 }
 
 function hideOtherPokemons(searchIndex) {
@@ -247,3 +238,9 @@ function generateSearchingPokemon(searchIndex) {
                 </div>
         `;
 }
+
+// Such Button designen
+// meldung erstellen wenn keine pokemon gefunden werden
+// 3.6 Lagere HTML Templates aus in extra-Funktionen
+// 4.3 data-id="not-found" auf dem "No match found."-Paragraphen (im JS)
+// 6.5 werden keine passenden Pokemon gefunden, zeige eine entsprechende Meldung an
