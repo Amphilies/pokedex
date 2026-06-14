@@ -241,6 +241,8 @@ function generateSearchingPokemon(searchIndex) {
 
 // Such Button designen
 // meldung erstellen wenn keine pokemon gefunden werden
+// container farbe der typen anpassen
+// typen hinzufügen beim geöffneten dialog
 // 3.6 Lagere HTML Templates aus in extra-Funktionen
 // 4.3 data-id="not-found" auf dem "No match found."-Paragraphen (im JS)
 // 6.5 werden keine passenden Pokemon gefunden, zeige eine entsprechende Meldung an
