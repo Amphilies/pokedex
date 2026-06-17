@@ -12,55 +12,82 @@ async function init() {
     stopLoadingSpinner();
 }
 
+function checkCacheData() {
+    for (let pokemonIndex = pokemonStartValue; pokemonIndex < pokemonLimitValue; pokemonIndex++) {
+        getData(pokemonIndex);
+    }
+}
+
+async function getData(pokemonIndex) {
+    const cacheVersion = 1;
+    const cacheName = `myapp-${cacheVersion}`;
+    const url = POKEMON_BASE_URL + `pokemon/${pokemonIndex + 1}`;
+    let cachedData = await getCachedData(cacheName, url);
+    if (cachedData) {
+        loadPokemonInformations(pokemonIndex, cachedData);
+        return cachedData;
+    }
+    const cacheStorage = await caches.open(cacheName);
+    await cacheStorage.add(url);
+    cachedData = await getCachedData(cacheName, url);
+    await deleteOldCaches(cacheName);
+    return cachedData;
+}
+// Get data from the cache.
+async function getCachedData(cacheName, url) {
+    const cacheStorage = await caches.open(cacheName);
+    const cachedResponse = await cacheStorage.match(url);
+
+    if (!cachedResponse || !cachedResponse.ok) {
+        return false;
+    }
+
+    return await cachedResponse.json();
+}
+// Delete any old caches to respect user's disk space.
+async function deleteOldCaches() {
+    const cacheVersion = 1;
+    const cacheName = `myapp-${cacheVersion}`;
+    const keys = await caches.keys();
+    for (const key of keys) {
+        const isOurCache = key.startsWith("myapp-");
+        if (cacheName === key || !isOurCache) {
+            continue;
+        }
+        caches.delete(key);
+    }
+    try {
+        const data = await getData();
+    } catch (error) {
+        console.error({ error });
+    }
+}
+
 async function renderPokemonShowcase() {
     generateElementPokemonShowcases();
-    loadPokemonInformations();
+    checkCacheData();
 }
 
 function generateElementPokemonShowcases() {
     for (let index = pokemonStartValue; index < pokemonLimitValue; index++) {
-        document.getElementById('pokemon_showcase').innerHTML += `
-                <div id="showcase_id${index}" class="b df-c-c-c pokemon-showcase">
-                    <div class="pokemon-showcase-header df-spb-c">
-                        <h3 class="pokemon-id" id="pokemon_id${index}"></h3>
-                        <h3 class="pokemon-title" id="pokemon_name${index}"></h3>
-                        <div class="pokemon-id"></div>
-                    </div>
-                    <div id="showcase_img${index}" onclick="openPokemonCard(${index})" class="pokemon-showcase-img-container df-c-c ">
-                        <img id="pokemon_image${index}" src="" alt="Pokemon">
-                    </div>
-                    <div class="df-spa-c pokemon-showcase-type-container">
-                        <img id="type_icon1_${index}" src = "" alt="">
-                        <img id="type_icon2_${index}" src = "" alt="">
-                    </div>
-                </div>
-        `;
+        document.getElementById('pokemon_showcase').innerHTML += elementsGenerateShowcase(index);
     }
 }
 
-function loadPokemonInformations() {
-    for (let index = pokemonStartValue; index < pokemonLimitValue; index++) {
-        fetchPokemonData(index).then(pokemonData => {
-            document.getElementById(`pokemon_id${index}`).innerText = `#${convertPokemonId(pokemonData)}`;
-            document.getElementById(`pokemon_name${index}`).innerText = pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1);
-            document.getElementById(`pokemon_image${index}`).src = `${POKEMON_IMG_URL}${pokemonData.id}.png`;
-            document.getElementById(`showcase_img${index}`).classList.add(pokemonData.types[0].type.name);
+function loadPokemonInformations(pokemonIndex, cachedData) {
+    document.getElementById(`pokemon_id${pokemonIndex}`).innerText = `#${cachedData.id}`;
+    document.getElementById(`pokemon_id${pokemonIndex}`).innerText = `#${convertPokemonId(cachedData)}`;
+    document.getElementById(`pokemon_name${pokemonIndex}`).innerText = cachedData.name.charAt(0).toUpperCase() + cachedData.name.slice(1);
+    document.getElementById(`pokemon_image${pokemonIndex}`).src = `${POKEMON_IMG_URL}${cachedData.id}.png`;
+    document.getElementById(`showcase_img${pokemonIndex}`).classList.add(cachedData.types[0].type.name);
 
-            for (let typeIndex = 0; typeIndex < pokemonData.types.length; typeIndex++) {
-                let pokemonTypeIcon = pokemonData.types[typeIndex].type.name;
-                document.getElementById(`type_icon${typeIndex + 1}_${index}`).src = `./img/${pokemonTypeIcon}.svg`;
-                if (!pokemonData.types[1]) {
-                    document.getElementById(`type_icon2_${index}`).classList.add("d-none");
-                }
-            }
-        });
+    for (let typeIndex = 0; typeIndex < cachedData.types.length; typeIndex++) {
+        let pokemonTypeIcon = cachedData.types[typeIndex].type.name;
+        document.getElementById(`type_icon${typeIndex + 1}_${pokemonIndex}`).src = `./img/${pokemonTypeIcon}.svg`;
+        if (!cachedData.types[1]) {
+            document.getElementById(`type_icon2_${pokemonIndex}`).classList.add("d-none");
+        }
     }
-}
-
-async function fetchPokemonData(pokemonIndex) {
-    const response = await fetch(`${POKEMON_BASE_URL}pokemon/${pokemonIndex + 1}`);
-    const data = await response.json();
-    return data;
 }
 
 function startLoadingSpinner() {
@@ -77,7 +104,7 @@ function stopLoadingSpinner() {
     }, 1500);
 }
 
-async function loadMorePokemon() {
+function loadMorePokemon() {
     pokemonLimitValue += 40;
     pokemonStartValue += 40;
     init();
@@ -112,14 +139,18 @@ function loadPokemonCardData(pokemonIndex) {
             document.getElementById('pokemon_card_id').innerText = `#${convertPokemonId(pokemon)} `;
             document.getElementById('pokemon_card_name').innerText = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
             document.getElementById('pokemon_card_image').src = POKEMON_IMG_URL + pokemon.id + ".png";
-            // document.getElementById('card_image').classList.add(pokemon.types[0].type.name);
+            document.getElementById('card_image').classList.add(pokemon.types[0].type.name);
             document.getElementById('card_image').classList.replace(document.getElementById('card_image').classList[2], pokemon.types[0].type.name);
-            for (let typeIndex = 0; typeIndex < pokemon.types.length; typeIndex++) {
-                let pokemonTypeIcon = pokemon.types[typeIndex].type.name;
-                document.getElementById(`type_icon${typeIndex + 1}_${pokemonIndex}`).src = `./img/${pokemonTypeIcon}.svg`;
-                if (!pokemon.types[1]) {
-                    document.getElementById(`type_icon2_${pokemonIndex}`).classList.add("d-none");
-                }
+            if (pokemon.types.length >= 2) {
+                document.getElementById(`card_type_icon1_0`).src = `./img/${pokemon.types[0].type.name}.svg`;
+                document.getElementById(`card_type_icon2_1`).src = `./img/${pokemon.types[1].type.name}.svg`;
+                document.getElementById(`card_type_icon2_1`).classList.remove('d-none');
+                return
+            }
+            if (pokemon.types.length = 1) {
+                document.getElementById(`card_type_icon1_0`).src = `./img/${pokemon.types[0].type.name}.svg`;
+                document.getElementById(`card_type_icon2_1`).classList.add('d-none');
+                return
             }
             resolve();
         } catch (error) {
@@ -182,7 +213,6 @@ function closePokemonCard() {
 async function searchPokemon() {
     startLoadingSpinner();
     document.getElementById('pokemon_showcase').innerHTML = "";
-
     let searchInput = document.getElementById('search_input').value.toLowerCase();
     for (let searchIndex = 0; searchIndex < pokemonLimit; searchIndex++) {
         const response = await fetch(`${POKEMON_BASE_URL}pokemon/${searchIndex + 1}`);
@@ -196,22 +226,26 @@ async function searchPokemon() {
         }
         if (data.name.includes(searchInput)) {
             generateSearchingPokemon(searchIndex);
-            document.getElementById(`pokemon_id${searchIndex}`).innerText = `#${convertPokemonId(data)}`;
-            document.getElementById(`pokemon_name${searchIndex}`).innerText = pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1);
-            document.getElementById(`pokemon_image${searchIndex}`).src = `${POKEMON_IMG_URL}${pokemonId}.png`;
-            document.getElementById(`showcase_img${searchIndex}`).classList.add(data.types[0].type.name);
-            for (let typeIndex = 0; typeIndex < data.types.length; typeIndex++) {
-                let pokemonTypeIcon = data.types[typeIndex].type.name;
-                document.getElementById(`type_icon${typeIndex + 1}_${searchIndex}`).src = `./img/${pokemonTypeIcon}.svg`;
-                if (!data.types[1]) {
-                    document.getElementById(`type_icon2_${searchIndex}`).classList.add("d-none");
-                }
-            }
+            generateSearchingPokemonInformation(searchIndex, pokemonName, pokemonId, data);
         } else {
             console.log("not found");
         }
     }
     stopLoadingSpinner();
+}
+
+function generateSearchingPokemonInformation(searchIndex, pokemonName, pokemonId, data) {
+    document.getElementById(`pokemon_id${searchIndex}`).innerText = `#${convertPokemonId(data)}`;
+    document.getElementById(`pokemon_name${searchIndex}`).innerText = pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1);
+    document.getElementById(`pokemon_image${searchIndex}`).src = `${POKEMON_IMG_URL}${pokemonId}.png`;
+    document.getElementById(`showcase_img${searchIndex}`).classList.add(data.types[0].type.name);
+    for (let typeIndex = 0; typeIndex < data.types.length; typeIndex++) {
+        let pokemonTypeIcon = data.types[typeIndex].type.name;
+        document.getElementById(`type_icon${typeIndex + 1}_${searchIndex}`).src = `./img/${pokemonTypeIcon}.svg`;
+        if (!data.types[1]) {
+            document.getElementById(`type_icon2_${searchIndex}`).classList.add("d-none");
+        }
+    }
 }
 
 function hideOtherPokemons(searchIndex) {
@@ -221,28 +255,10 @@ function hideOtherPokemons(searchIndex) {
 }
 
 function generateSearchingPokemon(searchIndex) {
-    document.getElementById('pokemon_showcase').innerHTML += `
-                <div id="showcase_id${searchIndex}" class="b df-c-c-c pokemon-showcase">
-                    <div class="pokemon-showcase-header df-spb-c">
-                        <h3 class="pokemon-id" id="pokemon_id${searchIndex}"></h3>
-                        <h3 class="pokemon-title" id="pokemon_name${searchIndex}"></h3>
-                        <div class="pokemon-id"></div>
-                    </div>
-                    <div id="showcase_img${searchIndex}" onclick="openPokemonCard(${searchIndex})" class="pokemon-showcase-img-container df-c-c ">
-                        <img id="pokemon_image${searchIndex}" src="" alt="Pokemon">
-                    </div>
-                    <div class="df-spa-c pokemon-showcase-type-container">
-                        <img id="type_icon1_${searchIndex}" src = "" alt="">
-                        <img id="type_icon2_${searchIndex}" src = "" alt="">
-                    </div>
-                </div>
-        `;
+    document.getElementById('pokemon_showcase').innerHTML += elementSearchPokemon(searchIndex);
 }
 
-// Such Button designen
 // meldung erstellen wenn keine pokemon gefunden werden
-// container farbe der typen anpassen
-// typen hinzufügen beim geöffneten dialog
 // 3.6 Lagere HTML Templates aus in extra-Funktionen
 // 4.3 data-id="not-found" auf dem "No match found."-Paragraphen (im JS)
 // 6.5 werden keine passenden Pokemon gefunden, zeige eine entsprechende Meldung an

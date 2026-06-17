@@ -13,6 +13,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="./script.js"></script>
+    <script src="./get_elements.js"></script>
 </head>
 
 <body id="body" onload="init()">
@@ -34,7 +35,10 @@
                         <button data-id=”search-button” onclick="searchPokemon()" data-id="search-button"
                             class="search-button"></button>
                     </div>
-                    <button class="search-button-responsive">Search</button>
+                    <div class="container-search-button-responsive">
+                        <img class="search-img-responsive" src="./img/removebackground1775382129381.png" alt="">
+                        <div class="search-button-responsive">Search</div>
+                    </div>
                 </div>
             </div>
         </header>
@@ -49,6 +53,7 @@
                 <button data-id="load-more-button" class="load-more-button" onclick="loadMorePokemon()"
                     id="load_more_button">Load more</button>
             </div>
+
             <dialog data-id="dialog" onclick="closePokemonCard()" id="pokemon_card" class="pokemon-card">
                 <div data-id="card" onclick="event.stopPropagation()" class="container-pokemon-card">
                     <div data-id="overlay-pokemon-name" class="pokemon-card-header df-spb-c">
@@ -66,9 +71,9 @@
                         <img data-id="next-button" onclick="nextPokemon()"
                             class="switch-pokemon button-switch button-next" src="./img/arrow.png" alt="">
                     </div>
-                    <div class="df-spa-c pokemon-showcase-type-container">
-                        <img id="type_icon1_0" src="" alt="">
-                        <img id="type_icon2_1" src="" alt="">
+                    <div id="card_types" class="df-spa-c pokemon-showcase-type-container">
+                        <img id="card_type_icon1_0" src="" alt="">
+                        <img id="card_type_icon2_1" src="" alt="">
                     </div>
                     <div class="container-statistics">
                         <div class="statistics-title">Statistics</div>
