@@ -240,8 +240,12 @@ async function searchPokemon() {
         }
     }
     if (!found) {
+        document.getElementById('load_more_button').classList.add('d-none');
         console.log("Kein Pokémon gefunden für:", searchInput);
         document.getElementById('pokemon_showcase').innerHTML = '<div data-id="not-found" id="no_pokemon_found" class="no-found">No pokemon found</div>';
+        document.getElementById('loading_spinner').classList.add('d-none');
+        document.getElementById('pokemon_showcase').classList.remove('d-none');
+        return;
     }
     stopLoadingSpinner();
 }
