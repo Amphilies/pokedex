@@ -85,6 +85,12 @@
     border-radius: 5px;
 }
 
+.no-found {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
 .pokemon-showcase-type-container img {
     width: 38px;
 }

@@ -33,7 +33,7 @@ async function getData(pokemonIndex) {
     await deleteOldCaches(cacheName);
     return cachedData;
 }
-// Get data from the cache.
+
 async function getCachedData(cacheName, url) {
     const cacheStorage = await caches.open(cacheName);
     const cachedResponse = await cacheStorage.match(url);
@@ -44,7 +44,7 @@ async function getCachedData(cacheName, url) {
 
     return await cachedResponse.json();
 }
-// Delete any old caches to respect user's disk space.
+
 async function deleteOldCaches() {
     const cacheVersion = 1;
     const cacheName = `myapp-${cacheVersion}`;
@@ -213,23 +213,30 @@ function closePokemonCard() {
 async function searchPokemon() {
     startLoadingSpinner();
     document.getElementById('pokemon_showcase').innerHTML = "";
-    let searchInput = document.getElementById('search_input').value.toLowerCase();
+    const searchInputElement = document.getElementById('search_input');
+    const searchInput = searchInputElement.value.toLowerCase().trim();
+    if (searchInput.length < 3) {
+        searchInputElement.value = "";
+        stopLoadingSpinner();
+        init();
+        alert("min. 3 letters");
+        return;
+    }
+    let found = false;
+
     for (let searchIndex = 0; searchIndex < pokemonLimit; searchIndex++) {
         const response = await fetch(`${POKEMON_BASE_URL}pokemon/${searchIndex + 1}`);
         const data = await response.json();
-        let pokemonName = data.name;
-        let pokemonId = data.id;
-        if (searchInput.length < 3) {
-            document.getElementById('search_input').value = "";
-            init();
-            return alert("min. 3 letters");
-        }
+
         if (data.name.includes(searchInput)) {
+            found = true;
             generateSearchingPokemon(searchIndex);
-            generateSearchingPokemonInformation(searchIndex, pokemonName, pokemonId, data);
-        } else {
-            console.log("not found");
+            generateSearchingPokemonInformation(searchIndex, data.name, data.id, data);
         }
+    }
+    if (!found) {
+        console.log("Kein Pokémon gefunden für:", searchInput);
+        document.getElementById('pokemon_showcase').innerHTML = '<div data-id="not-found" id="no_pokemon_found" class="no-found">No pokemon found</div>';
     }
     stopLoadingSpinner();
 }
@@ -257,8 +264,3 @@ function hideOtherPokemons(searchIndex) {
 function generateSearchingPokemon(searchIndex) {
     document.getElementById('pokemon_showcase').innerHTML += elementSearchPokemon(searchIndex);
 }
-
-// meldung erstellen wenn keine pokemon gefunden werden
-// 3.6 Lagere HTML Templates aus in extra-Funktionen
-// 4.3 data-id="not-found" auf dem "No match found."-Paragraphen (im JS)
-// 6.5 werden keine passenden Pokemon gefunden, zeige eine entsprechende Meldung an
