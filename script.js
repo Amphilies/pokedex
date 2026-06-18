@@ -13,7 +13,6 @@ async function init() {
         await renderPokemonShowcase();
         await deleteOldCaches(CACHE_NAME);
     } catch (error) {
-        console.error("Init failed:", error);
         document.getElementById('pokemon_showcase').innerHTML =
             '<div class="no-found">Fehler beim Laden der Pokémon.</div>';
     } finally {
@@ -22,8 +21,8 @@ async function init() {
 }
 
 async function renderPokemonShowcase() {
-    generateElementPokemonShowcases();   // erstellt leere Karten
-    await checkCacheData();              // füllt die Karten mit Daten
+    generateElementPokemonShowcases();
+    await checkCacheData();
 }
 
 async function checkCacheData() {
@@ -35,29 +34,21 @@ async function checkCacheData() {
 }
 
 async function getData(pokemonIndex) {
-    // Schutz gegen NaN/undefined
     if (!Number.isInteger(pokemonIndex) || pokemonIndex < 0 || pokemonIndex >= pokemonLimit) {
         throw new Error(`Invalid pokemonIndex: ${pokemonIndex}`);
     }
-
     const url = `${POKEMON_BASE_URL}pokemon/${pokemonIndex + 1}`;
-
-    // 1) Cache prüfen
     let data = await getCachedData(CACHE_NAME, url);
     if (data) {
         loadPokemonInformations(pokemonIndex, data);
         return data;
     }
-
-    // 2) Wenn nicht im Cache: vom Netzwerk holen, in Cache schreiben, anzeigen
     const response = await fetch(url);
     if (!response.ok) {
         throw new Error(`Fetch failed for ${url} with status ${response.status}`);
     }
-
     const cacheStorage = await caches.open(CACHE_NAME);
     await cacheStorage.put(url, response.clone());
-
     data = await response.json();
     loadPokemonInformations(pokemonIndex, data);
     return data;
@@ -183,7 +174,6 @@ function loadPokemonCardStats(pokemonIndex) {
         try {
             let response = await fetch(POKEMON_BASE_URL + "pokemon/" + (pokemonIndex + 1));
             let pokemon = await response.json();
-
             document.getElementById('hp_progress').style.width = `${pokemon.stats[0].base_stat}% `;
             document.getElementById('hp_progress').innerText = `${pokemon.stats[0].base_stat} `;
             document.getElementById('attack_progress').style.width = `${pokemon.stats[1].base_stat}% `;
@@ -196,7 +186,6 @@ function loadPokemonCardStats(pokemonIndex) {
             document.getElementById('special_defense_progress').innerText = `${pokemon.stats[4].base_stat} `;
             document.getElementById('speed_progress').style.width = `${pokemon.stats[5].base_stat}% `;
             document.getElementById('speed_progress').innerText = `${pokemon.stats[5].base_stat} `;
-
             resolve();
         } catch (error) {
             reject(error);
@@ -244,7 +233,6 @@ async function searchPokemon() {
     for (let searchIndex = 0; searchIndex < pokemonLimit; searchIndex++) {
         const response = await fetch(`${POKEMON_BASE_URL}pokemon/${searchIndex + 1}`);
         const data = await response.json();
-
         if (data.name.includes(searchInput)) {
             found = true;
             generateSearchingPokemon(searchIndex);
