@@ -1,66 +1,91 @@
 const POKEMON_BASE_URL = "https://pokeapi.co/api/v2/";
 const POKEMON_IMG_URL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
-const limit = "?limit=";
-const offset = "&offset=";
+const CACHE_VERSION = 1;
+const CACHE_NAME = `myapp-${CACHE_VERSION}`;
+
 let pokemonStartValue = 0;
 let pokemonLimitValue = 40;
 const pokemonLimit = 1025;
 
 async function init() {
     startLoadingSpinner();
-    await renderPokemonShowcase();
-    stopLoadingSpinner();
+    try {
+        await renderPokemonShowcase();
+        await deleteOldCaches(CACHE_NAME);
+    } catch (error) {
+        console.error("Init failed:", error);
+        document.getElementById('pokemon_showcase').innerHTML =
+            '<div class="no-found">Fehler beim Laden der Pokémon.</div>';
+    } finally {
+        stopLoadingSpinner();
+    }
 }
 
-function checkCacheData() {
+async function renderPokemonShowcase() {
+    generateElementPokemonShowcases();   // erstellt leere Karten
+    await checkCacheData();              // füllt die Karten mit Daten
+}
+
+async function checkCacheData() {
+    const promises = [];
     for (let pokemonIndex = pokemonStartValue; pokemonIndex < pokemonLimitValue; pokemonIndex++) {
-        getData(pokemonIndex);
+        promises.push(getData(pokemonIndex));
     }
+    await Promise.all(promises);
 }
 
 async function getData(pokemonIndex) {
-    const cacheVersion = 1;
-    const cacheName = `myapp-${cacheVersion}`;
-    const url = POKEMON_BASE_URL + `pokemon/${pokemonIndex + 1}`;
-    let cachedData = await getCachedData(cacheName, url);
-    if (cachedData) {
-        loadPokemonInformations(pokemonIndex, cachedData);
-        return cachedData;
+    // Schutz gegen NaN/undefined
+    if (!Number.isInteger(pokemonIndex) || pokemonIndex < 0 || pokemonIndex >= pokemonLimit) {
+        throw new Error(`Invalid pokemonIndex: ${pokemonIndex}`);
     }
-    const cacheStorage = await caches.open(cacheName);
-    await cacheStorage.add(url);
-    cachedData = await getCachedData(cacheName, url);
-    await deleteOldCaches(cacheName);
-    return cachedData;
+
+    const url = `${POKEMON_BASE_URL}pokemon/${pokemonIndex + 1}`;
+
+    // 1) Cache prüfen
+    let data = await getCachedData(CACHE_NAME, url);
+    if (data) {
+        loadPokemonInformations(pokemonIndex, data);
+        return data;
+    }
+
+    // 2) Wenn nicht im Cache: vom Netzwerk holen, in Cache schreiben, anzeigen
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`Fetch failed for ${url} with status ${response.status}`);
+    }
+
+    const cacheStorage = await caches.open(CACHE_NAME);
+    await cacheStorage.put(url, response.clone());
+
+    data = await response.json();
+    loadPokemonInformations(pokemonIndex, data);
+    return data;
 }
 
 async function getCachedData(cacheName, url) {
     const cacheStorage = await caches.open(cacheName);
     const cachedResponse = await cacheStorage.match(url);
 
-    if (!cachedResponse || !cachedResponse.ok) {
-        return false;
-    }
-
+    if (!cachedResponse || !cachedResponse.ok) return null;
     return await cachedResponse.json();
 }
 
-async function deleteOldCaches() {
-    const cacheVersion = 1;
-    const cacheName = `myapp-${cacheVersion}`;
+async function deleteOldCaches(currentCacheName) {
     const keys = await caches.keys();
+
     for (const key of keys) {
         const isOurCache = key.startsWith("myapp-");
-        if (cacheName === key || !isOurCache) {
-            continue;
+        if (isOurCache && key !== currentCacheName) {
+            await caches.delete(key);
         }
-        caches.delete(key);
     }
-    try {
-        const data = await getData();
-    } catch (error) {
-        console.error({ error });
-    }
+}
+
+function loadMorePokemon() {
+    pokemonStartValue = pokemonLimitValue;
+    pokemonLimitValue = Math.min(pokemonLimitValue + 40, pokemonLimit);
+    init();
 }
 
 async function renderPokemonShowcase() {
@@ -102,12 +127,6 @@ function stopLoadingSpinner() {
         document.getElementById('pokemon_showcase').classList.remove('d-none');
         document.getElementById('load_more_button').classList.remove('d-none');
     }, 1500);
-}
-
-function loadMorePokemon() {
-    pokemonLimitValue += 40;
-    pokemonStartValue += 40;
-    init();
 }
 
 function convertPokemonId(pokemonData) {
@@ -215,15 +234,13 @@ async function searchPokemon() {
     document.getElementById('pokemon_showcase').innerHTML = "";
     const searchInputElement = document.getElementById('search_input');
     const searchInput = searchInputElement.value.toLowerCase().trim();
+    let found = false;
     if (searchInput.length < 3) {
         searchInputElement.value = "";
-        stopLoadingSpinner();
         init();
         alert("min. 3 letters");
-        return;
+        return stopLoadingSpinner();
     }
-    let found = false;
-
     for (let searchIndex = 0; searchIndex < pokemonLimit; searchIndex++) {
         const response = await fetch(`${POKEMON_BASE_URL}pokemon/${searchIndex + 1}`);
         const data = await response.json();
