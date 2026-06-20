@@ -136,7 +136,7 @@
 
 .container-pokemon-card {
     background-color: rgb(0, 0, 0);
-    height: 800px;
+    height: 740px;
     width: 500px;
     border: solid rgb(70, 82, 249) 10px;
     border-radius: 50px;
@@ -154,7 +154,7 @@
     height: 70px;
     width: 100%;
     border-radius: 40px 40px 0px 0px;
-    padding: 0px 50px 0px 50px;
+    padding: 0px 10px 0px 10px;
 }
 
 .pokemon-card-title {
@@ -202,13 +202,13 @@
 }
 
 .pokemon-card-img {
-    /* height: 100%; */
     width: 400px;
     opacity: 100%;
 }
 
 .close-button {
     border-radius: 50%;
+    height: 30px;
     width: 30px;
 }
 
@@ -238,16 +238,17 @@
     }
 
     .pokemon-showcase-header {
-        padding-left: 5px;
+        padding: 5px 0 0 5px;
+        gap: 10px;
     }
 
     .pokemon-id {
         width: 28px;
-        font-size: 12px;
+        font-size: 16px;
     }
 
     .pokemon-title {
-        font-size: 12px;
+        font-size: 16px;
         padding: 0;
     }
 
@@ -261,7 +262,7 @@
     }
 
     .container-pokemon-card {
-        height: 850px;
+        height: 780px;
         width: 350px;
         top: 50%;
     }
@@ -288,9 +289,15 @@
 
 @media (max-width: 375px) {
     .pokemon-showcase {
-        max-height: 180px;
-        max-width: 120px;
+        max-height: 200px;
+        max-width: 150px;
         margin-bottom: 20px;
+    }
+
+    .pokemon-showcase-header {
+        padding: 5px 0 0 5px;
+        gap: 15px;
+        align-items: center;
     }
 
     .pokemon-card {
@@ -299,16 +306,11 @@
 
     .pokemon-id {
         width: 22px;
-        font-size: 10px;
+        font-size: 16px;
     }
 
     .pokemon-title {
-        font-size: 10px;
-    }
-
-    .pokemon-showcase:hover>.pokemon-showcase-img-container img {
-        height: 80%;
-        width: 80%;
+        font-size: 16px;
     }
 
     .pokemon-showcase-type-container img {
@@ -316,12 +318,13 @@
     }
 
     .container-pokemon-card {
-        height: 750px;
+        height: 640px;
         width: 300px;
         top: 50%;
     }
 
     .pokemon-card-header {
+        height: 40px;
         padding: 0px 20px 0px 20px;
     }
 
@@ -339,4 +342,14 @@
         height: 250px;
         width: 250px;
     }
+
+    .container-statistics {
+        height: 220px;
+        padding: 0 20px 30px 20px;
+    }
+
+    .statistics-title {
+        font-size: 16px;
+    }
+
 }
