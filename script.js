@@ -102,6 +102,8 @@ function loadPokemonInformations(pokemonIndex, cachedData) {
     for (let typeIndex = 0; typeIndex < cachedData.types.length; typeIndex++) {
         let pokemonTypeIcon = cachedData.types[typeIndex].type.name;
         document.getElementById(`type_icon${typeIndex + 1}_${pokemonIndex}`).src = `./img/${pokemonTypeIcon}.svg`;
+        document.getElementById(`type_icon${typeIndex + 1}_${pokemonIndex}`).setAttribute("alt", "pokemon type " + pokemonTypeIcon);
+
         if (!cachedData.types[1]) {
             document.getElementById(`type_icon2_${pokemonIndex}`).classList.add("d-none");
         }
@@ -274,6 +276,8 @@ function addPokemonCardData(pokemon) {
     document.getElementById('pokemon_card_image').src = POKEMON_IMG_URL + pokemon.id + ".png";
     document.getElementById('card_image').classList.add(pokemon.types[0].type.name);
     document.getElementById('card_image').classList.replace(document.getElementById('card_image').classList[2], pokemon.types[0].type.name);
+    document.getElementById(`card_type_icon1_0`).setAttribute("alt", "pokemon type " + pokemon.types[0].type.name);
+    document.getElementById(`card_type_icon2_1`).setAttribute("alt", "pokemon type " + pokemon.types[1].type.name);
     if (pokemon.types.length >= 2) {
         document.getElementById(`card_type_icon1_0`).src = `./img/${pokemon.types[0].type.name}.svg`;
         document.getElementById(`card_type_icon2_1`).src = `./img/${pokemon.types[1].type.name}.svg`;
