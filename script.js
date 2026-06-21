@@ -93,7 +93,9 @@ function generateElementPokemonShowcases() {
 
 function loadPokemonInformations(pokemonIndex, cachedData) {
     document.getElementById(`pokemon_id${pokemonIndex}`).innerText = `#${convertPokemonId(cachedData)}`;
+    document.getElementById(`showcase_id${pokemonIndex}`).setAttribute("data-id", `card ${cachedData.id}`);
     document.getElementById(`pokemon_name${pokemonIndex}`).innerText = cachedData.name.charAt(0).toUpperCase() + cachedData.name.slice(1);
+    document.getElementById(`pokemon_image${pokemonIndex}`).setAttribute("alt", "pokemon image " + cachedData.name.charAt(0).toUpperCase() + cachedData.name.slice(1));
     document.getElementById(`pokemon_image${pokemonIndex}`).src = `${POKEMON_IMG_URL}${cachedData.id}.png`;
     document.getElementById(`showcase_img${pokemonIndex}`).classList.add(cachedData.types[0].type.name);
 
@@ -151,8 +153,7 @@ function loadPokemonCardData(pokemonIndex) {
 }
 
 function loadPokemonCardStats(pokemonIndex) {
-    const statElements = ['hp_progress', 'attack_progress', 'defense_progress', 'special_attack_progress', 'special_defense_progress', 'speed_progress'
-    ];
+    const statElements = ['hp_progress', 'attack_progress', 'defense_progress', 'special_attack_progress', 'special_defense_progress', 'speed_progress'];
     return new Promise(async (resolve, reject) => {
         try {
             let response = await fetch(POKEMON_BASE_URL + "pokemon/" + (pokemonIndex + 1));
@@ -195,47 +196,43 @@ function closePokemonCard() {
 
 async function searchPokemon() {
     startLoadingSpinner();
-    document.getElementById('pokemon_showcase').innerHTML = "";
     const searchInputElement = document.getElementById('search_input');
     const searchInput = searchInputElement.value.toLowerCase().trim();
     let found = false;
     if (searchInput.length < 3) {
-        inputError(searchInputElement)
-        return stopLoadingSpinner();
+        inputError(searchInputElement);
+        return document.getElementById('load_more_button').classList.add('d-none');
     }
-    for (let searchIndex = 0; searchIndex < pokemonLimit; searchIndex++) {
-        const response = await fetch(`${POKEMON_BASE_URL}pokemon/${searchIndex + 1}`);
-        const data = await response.json();
-        found = true;
-        searchProgress(searchIndex, searchInput, data);
+    for (let searchIndex = 0; searchIndex < pokemonLimitValue; searchIndex++) {
+        const card = document.getElementById('showcase_id' + searchIndex);
+        const pokemon = document.getElementById('pokemon_name' + searchIndex);
+        if (pokemon.textContent.toLowerCase().trim().includes(searchInput)) {
+            found = true;
+            card.classList.remove('d-none');
+            document.getElementById('load_more_button').classList.add('d-none');
+            document.getElementById('reload_page').classList.remove('d-none');
+        } else {
+            card.classList.add('d-none');
+        }
     }
     if (!found) {
-        pokemonNotFound();
-        return;
+        return pokemonNotFound();
     }
     stopLoadingSpinner();
     document.getElementById('load_more_button').classList.add('d-none');
+}
+
+function pokemonNotFound() {
+    document.getElementById('pokemon_showcase').innerHTML = '<p class="no-found">No Pokémon found</p>';
     document.getElementById('reload_page').classList.remove('d-none');
+    document.getElementById('load_more_button').classList.add('d-none');
+    document.getElementById('loading_spinner').classList.add('d-none');
 }
 
 function inputError(searchInputElement) {
     searchInputElement.value = "";
     searchInputElement.placeholder = "min. 3 letters";
-    init();
-}
-
-async function searchProgress(searchIndex, searchInput, data) {
-    if (data.name.includes(searchInput)) {
-        generateSearchingPokemon(searchIndex);
-        generateSearchingPokemonInformation(searchIndex, data.name, data.id, data);
-    }
-    document.getElementById('reload_page').classList.remove('d-none');
-}
-
-function pokemonNotFound() {
-    document.getElementById('pokemon_showcase').innerHTML = '<div data-id="not-found" id="no_pokemon_found" class="no-found">No pokemon found</div>';
-    document.getElementById('loading_spinner').classList.add('d-none');
-    document.getElementById('pokemon_showcase').classList.remove('d-none');
+    stopLoadingSpinner();
 }
 
 function reloadPage() {
@@ -268,7 +265,7 @@ function hideOtherPokemons(searchIndex) {
 }
 
 function generateSearchingPokemon(searchIndex) {
-    document.getElementById('pokemon_showcase').innerHTML += elementSearchPokemon(searchIndex);
+    document.getElementById('pokemon_showcase').innerHTML += elementsGenerateShowcase(searchIndex);
 }
 
 function addPokemonCardData(pokemon) {

@@ -64,8 +64,11 @@
     width: 100%;
     font-size: 16px;
     padding-left: 15px;
+    padding-top: 5px;
     border-radius: 5px;
-
+    display: flex;
+    justify-content: start;
+    align-items: center;
 }
 
 .pokemon-showcase-img-container {
@@ -174,27 +177,14 @@
 .button-switch {
     background-color: #8c28ff;
     cursor: pointer;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
 }
 
 .button-switch:hover {
     background-color: #b370ff;
     cursor: pointer;
-}
-
-.button-previous {
-    left: 0px;
-    position: absolute;
-    width: 50px;
-}
-
-.button-next {
-    right: 0px;
-    position: absolute;
-    width: 50px;
-}
-
-.switch-pokemon {
-    border-radius: 50%;
 }
 
 .switch-pokemon-rotated {
@@ -211,13 +201,18 @@
     height: 30px;
     width: 30px;
 }
+.close-button-img {
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+}
 
 .close-button:hover {
     cursor: pointer;
 }
 
 .container-statistics {
-    padding: 0 20px 30px 20px;
+    padding: 15px 20px 30px 20px;
 }
 
 .statistics-title {
@@ -228,8 +223,8 @@
 
 @media (max-width: 845px) {
     .pokemon-showcase {
-        max-height: 200px;
-        max-width: 150px;
+        max-height: 250px;
+        max-width: 200px;
         margin-bottom: 20px;
     }
 
@@ -239,7 +234,7 @@
 
     .pokemon-showcase-header {
         padding: 5px 0 0 5px;
-        gap: 10px;
+        gap: 15px;
     }
 
     .pokemon-id {
@@ -282,22 +277,21 @@
     }
 
     .pokemon-card-img {
-        height: 350px;
-        width: 350px;
+        height: 200px;
+        width: calc(100% - 100px);
     }
 }
 
 @media (max-width: 375px) {
-    .pokemon-showcase {
+    /* .pokemon-showcase {
         max-height: 200px;
         max-width: 150px;
         margin-bottom: 20px;
-    }
+    } */
 
     .pokemon-showcase-header {
         padding: 5px 0 0 5px;
-        gap: 15px;
-        align-items: center;
+        gap: 20px;
     }
 
     .pokemon-card {
@@ -339,13 +333,13 @@
     }
 
     .pokemon-card-img {
-        height: 250px;
-        width: 250px;
+        height: 200px;
+        width: calc(100% - 100px);
     }
 
     .container-statistics {
         height: 220px;
-        padding: 0 20px 30px 20px;
+        padding: 10px 20px 30px 20px;
     }
 
     .statistics-title {

@@ -29,8 +29,11 @@ header {
 }
 
 .header-title {
+    position: relative;
+    display: flex;
+    gap: 30px;
     margin: 0;
-    padding: 0;
+    padding: 0 50px;
     font-size: 80px;
     color: black;
     transform: translateY(10px);
@@ -39,35 +42,47 @@ header {
 }
 
 .header-title-icon {
+    position: absolute;
+    left: 75px;
     width: 100px;
-    transform: translate(170px, 20px);
+    transform: translate(0px, 0px);
 
     animation: bounce 2s linear 0s;
 }
 
 @keyframes bounce {
     0% {
-        transform: translate(170px, -20px);
+        transform: translate(0px, -50px);
     }
-
+    10% {
+        transform: translate(0px, -40px);
+    }
     20% {
-        transform: translate(170px, 20px);
+        transform: translate(0px, 0px);
     }
-
+    30% {
+        transform: translate(0px, -30px);
+    }
     40% {
-        transform: translate(170px, -10px);
+        transform: translate(0px, 0px);
     }
-
+    50% {
+        transform: translate(0px, -20px);
+    }
     60% {
-        transform: translate(170px, 20px);
+        transform: translate(0px, 0px);
     }
-
+    70% {
+        transform: translate(0px, -10px);
+    }
     80% {
-        transform: translate(170px, 10px);
+        transform: translate(0px, 0px);
     }
-
+    90% {
+        transform: translate(0px, -5px);
+    }
     100% {
-        transform: translate(170px, 20px);
+        transform: translate(0px, 0px);
     }
 }
 
@@ -111,13 +126,13 @@ header {
     background-position: center;
     border: none;
     border-radius: 0px 20px 20px 0px;
-    width: 100px;
     padding: 10px 20px;
     cursor: pointer;
 }
 
 .container-search-button-responsive {
     display: none;
+    filter: none;
 }
 
 input.search-field {
@@ -163,11 +178,7 @@ footer {
     overflow: hidden;
 }
 
-@media (max-width: 1260px) {
-    .container-header-left {
-        gap: 0px;
-    }
-
+@media (max-width: 1210px) {
     .header-logo {
         width: auto;
     }
@@ -200,10 +211,22 @@ footer {
     }
 }
 
-@media (max-width: 950px) {
+@media (max-width: 90px) {
+    header {
+        height: 100px;
+    }
+
+    .container-header-left {
+        height: 100%;
+    }
+
+    .container-header-search {
+        padding-top: 50px;
+    }
+
     .header-logo {
         width: 200px;
-        padding-top: 160px;
+        padding-top: 110px;
         rotate: 345deg;
     }
 
@@ -235,7 +258,7 @@ footer {
 @media (max-width: 510px) {
     .header-logo {
         width: 100px;
-        padding-top: 150px;
+        padding-top: 105px;
         rotate: 345deg;
     }
 
@@ -261,9 +284,18 @@ footer {
 }
 
 @media (max-width: 380px) {
+    .pokemon-showcase {
+        background-color: red;
+        min-width: 180px;
+    }
+
+    header {
+        padding-top: 10px;
+    }
+
     .header-logo {
         width: 100px;
-        padding-top: 150px;
+        padding-top: 95px;
         rotate: 345deg;
     }
 
@@ -315,9 +347,10 @@ footer {
 
     .search-button-responsive {
         background-color: #934bf0;
-        ;
         border-radius: 50%;
         display: flex;
         align-items: center;
+        padding-top: 13px;
+        padding-right: 5px;
     }
 }
