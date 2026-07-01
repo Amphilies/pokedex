@@ -1,17 +1,16 @@
 const POKEMON_BASE_URL = "https://pokeapi.co/api/v2/";
 const POKEMON_IMG_URL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
-const CACHE_VERSION = 1;
-const CACHE_NAME = `myapp-${CACHE_VERSION}`;
+let pokemonData = [];
 
 let pokemonStartValue = 0;
-let pokemonLimitValue = 40;
+let pokemonLimitValue = 5;
 const pokemonLimit = 1025;
 
 async function init() {
     startLoadingSpinner();
     try {
+        await getPokemonData();
         await renderPokemonShowcase();
-        await deleteOldCaches(CACHE_NAME);
     } catch (error) {
         document.getElementById('pokemon_showcase').innerHTML =
             '<div class="no-found">Fehler beim Laden der Pokémon.</div>';
@@ -20,91 +19,72 @@ async function init() {
     }
 }
 
-async function renderPokemonShowcase() {
-    generateElementPokemonShowcases();
-    await checkCacheData();
-}
-
-async function checkCacheData() {
-    const promises = [];
+async function getPokemonData() {
     for (let pokemonIndex = pokemonStartValue; pokemonIndex < pokemonLimitValue; pokemonIndex++) {
-        promises.push(getData(pokemonIndex));
+        const response = await fetch(`${POKEMON_BASE_URL}pokemon/${pokemonIndex + 1}`);
+        const pokemonDataToJson = await response.json();
+        pokemonData.push({
+            id: pokemonDataToJson.id,
+            name: pokemonDataToJson.name,
+            types: pokemonDataToJson.types
+        });
     }
-    await Promise.all(promises);
 }
 
-async function getData(pokemonIndex) {
-    if (!Number.isInteger(pokemonIndex) || pokemonIndex < 0 || pokemonIndex >= pokemonLimit) {
-        throw new Error(`Invalid pokemonIndex: ${pokemonIndex}`);
+async function renderPokemonShowcase() {
+    let html = '';
+    for (let index = pokemonStartValue; index < pokemonLimitValue; index++) {
+        const pokemonImage = `${POKEMON_IMG_URL}${index + 1}.png`;
+        html += elementsGenerateShowcase(index, pokemonImage, pokemonData[index]);
     }
-    const url = `${POKEMON_BASE_URL}pokemon/${pokemonIndex + 1}`;
-    let data = await getCachedData(CACHE_NAME, url);
-    if (data) {
-        loadPokemonInformations(pokemonIndex, data);
-        return data;
-    }
-    const response = await fetch(url);
-    if (!response.ok) {
-        throw new Error(`Fetch failed for ${url} with status ${response.status}`);
-    }
-    const cacheStorage = await caches.open(CACHE_NAME);
-    await cacheStorage.put(url, response.clone());
-    data = await response.json();
-    loadPokemonInformations(pokemonIndex, data);
-    return data;
-}
-
-async function getCachedData(cacheName, url) {
-    const cacheStorage = await caches.open(cacheName);
-    const cachedResponse = await cacheStorage.match(url);
-
-    if (!cachedResponse || !cachedResponse.ok) return null;
-    return await cachedResponse.json();
-}
-
-async function deleteOldCaches(currentCacheName) {
-    const keys = await caches.keys();
-
-    for (const key of keys) {
-        const isOurCache = key.startsWith("myapp-");
-        if (isOurCache && key !== currentCacheName) {
-            await caches.delete(key);
+    document.getElementById('pokemon_showcase').insertAdjacentHTML('beforeend', html);
+    for (let index = pokemonStartValue; index < pokemonLimitValue; index++) {
+        if (!pokemonData[index] || !pokemonData[index].types) continue;
+        for (let typeIndex = 0; typeIndex < pokemonData[index].types.length; typeIndex++) {            
+            if (document.getElementById(`type_icon${typeIndex + 1}_${index}`)) {
+                document.getElementById(`type_icon${typeIndex + 1}_${index}`).src = `./img/${pokemonData[index].types[typeIndex].type.name}.svg`;
+            }
+        }
+        if (!pokemonData[index].types[1]) {
+            const secondType = document.getElementById(`type_icon2_${index}`);
+            if (secondType) secondType.classList.add('d-none');
         }
     }
 }
 
 async function loadMorePokemon() {
-    pokemonStartValue += 40;
-    pokemonLimitValue = Math.min(pokemonLimitValue + 40, pokemonLimit);
+    pokemonStartValue += 5;
+    pokemonLimitValue = Math.min(pokemonLimitValue + 5, pokemonLimit);
     startLoadingSpinner();
-    setTimeout(() => {
-        renderPokemonShowcase()
+    setTimeout(async () => {
+        await getPokemonData();
+        await renderPokemonShowcase();
         setTimeout(() => {
             stopLoadingSpinner();
         }, 1000);
     }, 2000);
 }
 
-function generateElementPokemonShowcases() {
+async function generateElementPokemonShowcases() {
     for (let index = pokemonStartValue; index < pokemonLimitValue; index++) {
-        document.getElementById('pokemon_showcase').innerHTML += elementsGenerateShowcase(index);
+
     }
 }
 
-function loadPokemonInformations(pokemonIndex, cachedData) {
-    document.getElementById(`pokemon_id${pokemonIndex}`).innerText = `#${convertPokemonId(cachedData)}`;
-    document.getElementById(`showcase_id${pokemonIndex}`).setAttribute("data-id", `card ${cachedData.id}`);
-    document.getElementById(`pokemon_name${pokemonIndex}`).innerText = cachedData.name.charAt(0).toUpperCase() + cachedData.name.slice(1);
-    document.getElementById(`pokemon_image${pokemonIndex}`).setAttribute("alt", "pokemon image " + cachedData.name.charAt(0).toUpperCase() + cachedData.name.slice(1));
-    document.getElementById(`pokemon_image${pokemonIndex}`).src = `${POKEMON_IMG_URL}${cachedData.id}.png`;
-    document.getElementById(`showcase_img${pokemonIndex}`).classList.add(cachedData.types[0].type.name);
+async function loadPokemonInformations(pokemonIndex, pokemonData) {
+    document.getElementById(`pokemon_id${pokemonIndex}`).innerText = `#${convertPokemonId(pokemonData)}`;
+    document.getElementById(`showcase_id${pokemonIndex}`).setAttribute("data-id", `card ${pokemonData.id}`);
+    document.getElementById(`pokemon_name${pokemonIndex}`).innerText = pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1);
+    document.getElementById(`pokemon_image${pokemonIndex}`).setAttribute("alt", "pokemon image " + pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1));
+    document.getElementById(`pokemon_image${pokemonIndex}`).src = `${POKEMON_IMG_URL}${pokemonData.id}.png`;
+    document.getElementById(`showcase_img${pokemonIndex}`).classList.add(pokemonData.types[0].type.name);
 
-    for (let typeIndex = 0; typeIndex < cachedData.types.length; typeIndex++) {
-        let pokemonTypeIcon = cachedData.types[typeIndex].type.name;
+    for (let typeIndex = 0; typeIndex < pokemonData.types.length; typeIndex++) {
+        let pokemonTypeIcon = pokemonData.types[typeIndex].type.name;
         document.getElementById(`type_icon${typeIndex + 1}_${pokemonIndex}`).src = `./img/${pokemonTypeIcon}.svg`;
         document.getElementById(`type_icon${typeIndex + 1}_${pokemonIndex}`).setAttribute("alt", "pokemon type " + pokemonTypeIcon);
 
-        if (!cachedData.types[1]) {
+        if (!pokemonData.types[1]) {
             document.getElementById(`type_icon2_${pokemonIndex}`).classList.add("d-none");
         }
     }
