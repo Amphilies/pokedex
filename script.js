@@ -125,7 +125,8 @@ function searchedPokemonFound(searchIndex) {
 }
 
 function pokemonNotFound() {
-    document.getElementById('no_found').classList.remove('d-none');
+    document.getElementById('search_input').placeholder = "Search by Name";
+    document.getElementById('error_content').innerHTML = `<p data-id="not-found" id="no_found" class="no-found">No Pokémon found</p>`;
     document.getElementById('reload_page_button').classList.remove('d-none');
     document.getElementById('load_more_button').classList.add('d-none');
     document.getElementById('loading_spinner').classList.add('d-none');
