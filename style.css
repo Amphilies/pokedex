@@ -1,0 +1,352 @@
+/* Pokemon Showcase */
+.container-loading-spinner {
+    height: 100%;
+    width: 100%;
+}
+
+.loading-spinner {
+    height: 200px;
+    /* width: 100%; */
+    animation: spinner 3s linear infinite;
+}
+
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.container-pokemon-showcase {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    gap: 20px;
+    justify-content: center;
+}
+
+.pokemon-showcase {
+    height: 350px;
+    width: 250px;
+    border: solid rgb(70, 82, 249) 5px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.pokemon-showcase:hover {
+    filter: drop-shadow(10px 10px 15px rgb(49, 255, 245));
+}
+
+.pokemon-showcase:hover>.pokemon-showcase-img-container img {
+    height: 90%;
+    width: 90%;
+    cursor: pointer;
+}
+
+.pokemon-id {
+    color: white;
+    width: 50px;
+    font-size: 20px;
+}
+
+.pokemon-title {
+    color: white;
+    font-size: 20px;
+}
+
+.pokemon-showcase-header {
+    background-color: #363636;
+    color: white;
+    height: 40px;
+    width: 100%;
+    font-size: 16px;
+    padding-left: 15px;
+    padding-top: 5px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.pokemon-showcase-img-container {
+    height: calc(100% - 50px - 28px);
+    width: 100%;
+}
+
+.pokemon-showcase-img-container img {
+    height: 70%;
+    width: 70%;
+}
+
+.pokemon-showcase-type-container {
+    background-color: #8c28ff;
+    ;
+    height: 50px;
+    width: 100%;
+    border-radius: 5px;
+}
+
+.no-found {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.pokemon-showcase-type-container img {
+    width: 38px;
+}
+
+.container-load-more-button {
+    height: 35px;
+    width: 135px;
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.load-more-button {
+    background-color: #ffffff;
+    height: 30px;
+    width: 130px;
+    border: none;
+    border-radius: 20px;
+    color: #8c28ff;
+    ;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.load-more-button:hover {
+    height: 35px;
+    width: 135px;
+}
+
+/* Pokemon Card */
+
+.pokemon-card {
+    background-color: rgba(0, 0, 0, 0.771);
+    min-height: 100%;
+    min-width: 100%;
+}
+
+.container-pokemon-card {
+    background-color: rgb(0, 0, 0);
+    width: 500px;
+    border: solid rgb(70, 82, 249) 10px;
+    border-radius: 50px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.pokemon-card-header {
+    background-color: rgb(57, 57, 57);
+    height: 70px;
+    width: 100%;
+    border-radius: 40px 40px 0px 0px;
+    padding: 0px 10px 0px 10px;
+}
+
+.pokemon-card-title {
+    color: white;
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.pokemon-card-img-container {
+    border: solid black 1px;
+    height: 320px;
+    width: 100%;
+    position: relative;
+}
+
+.button-switch {
+    background-color: #8c28ff;
+    cursor: pointer;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+}
+
+.button-switch:hover {
+    background-color: #b370ff;
+    cursor: pointer;
+}
+
+.switch-pokemon-rotated {
+    rotate: 180deg;
+}
+
+.pokemon-card-img {
+    width: calc(100% - 110px);
+    opacity: 100%;
+}
+
+.close-button {
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+}
+
+.close-button-img {
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+}
+
+.close-button:hover {
+    cursor: pointer;
+}
+
+.container-statistics {
+    padding: 15px 20px 30px 20px;
+}
+
+.statistics-title {
+    color: white;
+}
+
+/* Responsive Styles */
+
+@media (max-width: 845px) {
+    .pokemon-showcase {
+        max-height: 250px;
+        max-width: 200px;
+        margin-bottom: 20px;
+    }
+
+    .pokemon-card {
+        width: 90%;
+    }
+
+    .pokemon-showcase-header {
+        padding: 5px 0 0 5px;
+        gap: 15px;
+    }
+
+    .pokemon-id {
+        width: 28px;
+        font-size: 16px;
+    }
+
+    .pokemon-title {
+        font-size: 16px;
+        padding: 0;
+    }
+
+    .pokemon-showcase:hover>.pokemon-showcase-img-container img {
+        height: 80%;
+        width: 80%;
+    }
+
+    .pokemon-showcase-type-container img {
+        width: 30px;
+    }
+
+    .container-pokemon-card {
+        width: 350px;
+        top: 50%;
+    }
+
+    .pokemon-card-header {
+        padding: 0px 20px 0px 20px;
+    }
+
+    .pokemon-card-title {
+        font-size: 24px;
+        font-weight: 600;
+    }
+
+    .pokemon-card-img-container {
+        height: 200px;
+    }
+
+    .pokemon-card-img {
+        height: 200px;
+        width: calc(100% - 110px);
+    }
+}
+
+@media (max-width: 375px) {
+    .pokemon-showcase-header {
+        padding: 5px 0 0 5px;
+        gap: 20px;
+    }
+
+    .pokemon-card {
+        width: 90%;
+    }
+
+    .pokemon-id {
+        width: 22px;
+        font-size: 16px;
+    }
+
+    .pokemon-title {
+        font-size: 16px;
+    }
+
+    .pokemon-showcase-type-container img {
+        width: 24px;
+    }
+
+    .container-pokemon-card {
+        height: 540px;
+        width: 250px;
+        top: 50%;
+    }
+
+    .pokemon-card-header {
+        height: 40px;
+        padding: 0px 20px 0px 20px;
+    }
+
+    .pokemon-card-title {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .pokemon-card-img {
+        height: 200px;
+        width: calc(100% - 110px);
+    }
+
+    .container-statistics {
+        height: 220px;
+        padding: 10px 20px 30px 20px;
+    }
+
+    .statistics-title {
+        font-size: 16px;
+    }
+
+    .pokemon-card-img {
+        height: 100%;
+        width: calc(100% - 70px);
+    }
+    .button-switch {
+        height: 30px;
+        width: 30px;
+    }
+    .close-button {
+        height: 25px;
+        width: 25px;
+    }
+    .close-button-img {
+        height: 25px;
+        width: 25px;
+    }
+}

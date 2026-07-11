@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokedex</title>
+
+    <!-- CSS -->
+    <link rel="shortcut icon" href="./img/pokeball_favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="./standart.css">
+    <link rel="stylesheet" href="./template.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./background_color.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!-- scripts -->
+    <script src="./script.js"></script>
+    <script src="./html_templates.js"></script>
+    <script src="./data.js"></script>
+    <script src="./pokemon_card.js"></script>
+</head>
+
+<body id="body" onload="init()">
+    <div class="site">
+        <header>
+            <div class="df-spb-c content-limit">
+                <div class="container-header-left">
+                    <a href="./index.html">
+                        <div class="container-header-title">
+                            <h1 class="header-title">P
+                                <span class="header-title-icon"><img src="./img/Poké_Ball_icon.svg.png" alt="">
+                                </span> kedex
+                            </h1>
+                        </div>
+                    </a>
+                </div>
+                <div class="container-header-search">
+                    <div class="designed-search-field">
+                        <input data-id="search-input" id="search_input" class="search-field" type="search"
+                            placeholder="Search by Name" required>
+                        <button data-id="search-button" aria-controls="search-button" onclick="searchPokemon()"
+                            class="search-button"></button>
+                    </div>
+                    <button data-id="search-button" aria-controls="search-button" onclick="searchPokemon()"
+                        class="container-search-button-responsive">
+                        <img class="search-img-responsive" src="./img/removebackground1775382129381.png" alt="">
+                        <p class="search-button-responsive">Search</p>
+                    </button>
+                </div>
+            </div>
+        </header>
+        <main data-id="content">
+            <ul class="container-pokemon-showcase content-limit" id="pokemon_showcase">
+                <p id="no_found" class="no-found d-none">No Pokémon found</p>
+            </ul>
+            <div id="loading_spinner" data-id="loading-spinner" class="container-loading-spinner df-c-c">
+                <img class="loading-spinner" src="./img/pokeball-icon.png" alt="">
+            </div>
+            <div data-id="load-more-button" class="container-load-more-button">
+                <button data-id="load-more-button" aria-controls="load-more-pokemon-button" class="load-more-button"
+                    onclick="loadMorePokemon()" id="load_more_button">Load more</button>
+                <button data-id="reload-page-button" aria-controls="reload-page-button" class="load-more-button d-none"
+                    onclick="reloadPage()" id="reload_page_button">Reload page</button>
+            </div>
+            <dialog data-id="dialog" onclick="closePokemonCard()" id="pokemon_card" class="pokemon-card">
+                <div data-id="card" onclick="event.stopPropagation()" class="container-pokemon-card">
+                    <div data-id="overlay-pokemon-name" class="pokemon-card-header df-spb-c">
+                        <div class="pokemon-card-title" id="pokemon_card_id"></div>
+                        <div class="pokemon-card-title" id="pokemon_card_name"></div>
+                        <button class="close-button" aria-controls="close-pokemon-button" onclick="closePokemonCard()">
+                            <img class="close-button-img" data-id="close-dialog-button" src="./img/close.png" alt="">
+                        </button>
+                    </div>
+                    <div data-id="card-image" id="card_image" class="df-c-c pokemon-card-img-container">
+                        <button onclick="previousPokemon()" class="button-switch" aria-controls="previous-button"
+                            id="previous_button">
+                            <img data-id="prev-button" class="button-switch switch-pokemon-rotated"
+                                src="./img/arrow.png" alt=""></button>
+                        <img data-id="dialog-image" id="pokemon_card_image" class="pokemon-card-img" src="" alt="">
+                        <button onclick="nextPokemon()" class="button-switch" aria-controls="next-button"
+                            id="next_button">
+                            <img data-id="next-button" class="button-switch" src="./img/arrow.png" alt=""></button>
+                    </div>
+                    <div id="card_types" class="df-spa-c pokemon-showcase-type-container">
+                        <img id="card_type_icon1_0" src="" alt="">
+                        <img id="card_type_icon2_1" src="" alt="">
+                    </div>
+                    <div class="container-statistics">
+                        <div class="statistics-title">Health Points</div>
+                        <div class="progress" role="progressbar" aria-label="hp-progress" aria-valuenow="100"
+                            aria-valuemin="0" aria-valuemax="100">
+                            <div id="hp_progress" class="progress-bar" style="width: 100%"></div>
+                        </div>
+                        <div class="statistics-title">Attack</div>
+                        <div class="progress" role="progressbar" aria-label="attack-progress" aria-valuenow="100"
+                            aria-valuemin="0" aria-valuemax="100">
+                            <div id="attack_progress" class="progress-bar" style="width: 100%"></div>
+                        </div>
+                        <div class="statistics-title">Defense</div>
+                        <div class="progress" role="progressbar" aria-label="defense-progress" aria-valuenow="100"
+                            aria-valuemin="0" aria-valuemax="100">
+                            <div id="defense_progress" class="progress-bar" style="width: 100%"></div>
+                        </div>
+                        <div class="statistics-title">Speed</div>
+                        <div class="progress" role="progressbar" aria-label="speed-progress" aria-valuenow="100"
+                            aria-valuemin="0" aria-valuemax="100">
+                            <div id="speed_progress" class="progress-bar" style="width: 100%"></div>
+                        </div>
+                        <div class="statistics-title">Special Attack</div>
+                        <div class="progress" role="progressbar" aria-label="special-attack-progress"
+                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                            <div id="special_attack_progress" class="progress-bar" style="width: 100%"></div>
+                        </div>
+                        <div class="statistics-title">Special Defense</div>
+                        <div class="progress" role="progressbar" aria-label="special-defense-progress"
+                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                            <div id="special_defense_progress" class="progress-bar" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+            </dialog>
+        </main>
+        <footer>
+            <div class="content-limit">
+                <p>&copy; 2023 Pokedex</p>
+            </div>
+        </footer>
+    </div>
+</body>
