@@ -57,7 +57,7 @@
             <div id="loading_spinner" data-id="loading-spinner" class="container-loading-spinner df-c-c">
                 <img class="loading-spinner" src="./img/pokeball-icon.png" alt="">
             </div>
-            <div data-id="load-more-button" class="extras">
+            <div class="extras">
                 <div id="error_content"></div>
                 <button data-id="load-more-button" aria-controls="load-more-pokemon-button" class="load-more-button"
                     onclick="loadMorePokemon()" id="load_more_button">Load more</button>
@@ -65,23 +65,23 @@
                     onclick="reloadPage()" id="reload_page_button">Reload page</button>
             </div>
             <dialog data-id="dialog" onclick="closePokemonCard()" id="pokemon_card" class="pokemon-card">
-                <div data-id="card" onclick="event.stopPropagation()" class="container-pokemon-card">
-                    <div data-id="overlay-pokemon-name" class="pokemon-card-header df-spb-c">
+                <div data-id="overlay-pokemon-name" onclick="event.stopPropagation()" class="container-pokemon-card">
+                    <div class="pokemon-card-header df-spb-c">
                         <div class="pokemon-card-title" id="pokemon_card_id"></div>
                         <div class="pokemon-card-title" id="pokemon_card_name"></div>
-                        <button class="close-button" aria-controls="close-pokemon-button" onclick="closePokemonCard()">
-                            <img class="close-button-img" data-id="close-dialog-button" src="./img/close.png" alt="">
+                        <button data-id="close-dialog-button" class="close-button" aria-controls="close-pokemon-button" onclick="closePokemonCard()">
+                            <img class="close-button-img" src="./img/close.png" alt="">
                         </button>
                     </div>
                     <div data-id="card-image" id="card_image" class="df-c-c pokemon-card-img-container">
-                        <button onclick="previousPokemon()" class="button-switch" aria-controls="previous-button"
+                        <button data-id="prev-button" onclick="previousPokemon()" class="button-switch" aria-controls="previous-button"
                             id="previous_button">
-                            <img data-id="prev-button" class="button-switch switch-pokemon-rotated"
+                            <img class="button-switch switch-pokemon-rotated"
                                 src="./img/arrow.png" alt=""></button>
                         <img data-id="dialog-image" id="pokemon_card_image" class="pokemon-card-img" src="" alt="">
-                        <button onclick="nextPokemon()" class="button-switch" aria-controls="next-button"
+                        <button data-id="next-button" onclick="nextPokemon()" class="button-switch" aria-controls="next-button"
                             id="next_button">
-                            <img data-id="next-button" class="button-switch" src="./img/arrow.png" alt=""></button>
+                            <img class="button-switch" src="./img/arrow.png" alt=""></button>
                     </div>
                     <div id="card_types" class="df-spa-c pokemon-showcase-type-container">
                         <img id="card_type_icon1_0" src="" alt="">
