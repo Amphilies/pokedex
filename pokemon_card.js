@@ -56,23 +56,18 @@ function updatePokemonData(pokemon) {
         document.getElementById('card_image').classList.remove(oldBackground);
         document.getElementById('card_image').classList.add(pokemon.types[0].type.name);
     }
-    const type1 = document.getElementById('card_type_icon1_0');
-    const type2 = document.getElementById('card_type_icon2_1');
     if (pokemon.types && pokemon.types.length >= 2) {
-        type1.src = `./img/${pokemon.types[0].type.name}.svg`; type1.setAttribute('alt', 'pokemon type ' + pokemon.types[0].type.name);
-        type2.src = `./img/${pokemon.types[1].type.name}.svg`; type2.setAttribute('alt', 'pokemon type ' + pokemon.types[1].type.name); type2.classList.remove('d-none');
-        return;
+        document.getElementById('card_type_icon1_0').src = `./img/${pokemon.types[0].type.name}.svg`; document.getElementById('card_type_icon1_0').setAttribute('alt', 'pokemon type ' + pokemon.types[0].type.name);
+        document.getElementById('card_type_icon2_1').src = `./img/${pokemon.types[1].type.name}.svg`; document.getElementById('card_type_icon2_1').setAttribute('alt', 'pokemon type ' + pokemon.types[1].type.name); document.getElementById('card_type_icon2_1').classList.remove('d-none'); return;
     }
     if (pokemon.types && pokemon.types.length === 1) {
-        type1.src = `./img/${pokemon.types[0].type.name}.svg`; type1.setAttribute('alt', 'pokemon type ' + pokemon.types[0].type.name);
-        type2.classList.add('d-none');
-        return;
+        document.getElementById('card_type_icon1_0').src = `./img/${pokemon.types[0].type.name}.svg`; document.getElementById('card_type_icon1_0').setAttribute('alt', 'pokemon type ' + pokemon.types[0].type.name);
+        document.getElementById('card_type_icon2_1').classList.add('d-none'); return;
     }
 }
 
 function previousPokemon() {
     const visible = getVisibleIndexes();
-    // if (!visible.length) return;
     let pos = visible.indexOf(currentPokemonIndex);
     if (pos === -1) {
         pos = 0;
@@ -81,20 +76,12 @@ function previousPokemon() {
         pos = (pos - 1 + visible.length) % visible.length;
         currentPokemonIndex = visible[pos];
     }
-    if (visible.length <= 1) {
-        document.getElementById('previous_button').setAttribute('disabled', true);
-        document.getElementById('next_button').setAttribute('disabled', true);
-    } else {
-        document.getElementById('previous_button').removeAttribute('disabled');
-        document.getElementById('next_button').removeAttribute('disabled');
-    }
     loadPokemonCardData(currentPokemonIndex);
     loadPokemonCardStats(currentPokemonIndex);
 }
 
 function nextPokemon() {
     const visible = getVisibleIndexes();
-    // if (!visible.length) return;
     let pos = visible.indexOf(currentPokemonIndex);
     if (pos === -1) {
         pos = 0;
@@ -102,13 +89,6 @@ function nextPokemon() {
     } else {
         pos = (pos + 1) % visible.length;
         currentPokemonIndex = visible[pos];
-    }
-    if (visible.length <= 1) {
-        document.getElementById('previous_button').setAttribute('disabled', true);
-        document.getElementById('next_button').setAttribute('disabled', true);
-    } else {
-        document.getElementById('previous_button').removeAttribute('disabled');
-        document.getElementById('next_button').removeAttribute('disabled');
     }
     loadPokemonCardData(currentPokemonIndex);
     loadPokemonCardStats(currentPokemonIndex);
