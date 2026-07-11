@@ -139,7 +139,6 @@
 
 .container-pokemon-card {
     background-color: rgb(0, 0, 0);
-    height: 740px;
     width: 500px;
     border: solid rgb(70, 82, 249) 10px;
     border-radius: 50px;
@@ -192,7 +191,7 @@
 }
 
 .pokemon-card-img {
-    width: 400px;
+    width: calc(100% - 110px);
     opacity: 100%;
 }
 
@@ -201,6 +200,7 @@
     height: 30px;
     width: 30px;
 }
+
 .close-button-img {
     border-radius: 50%;
     height: 30px;
@@ -257,7 +257,6 @@
     }
 
     .container-pokemon-card {
-        height: 780px;
         width: 350px;
         top: 50%;
     }
@@ -272,23 +271,16 @@
     }
 
     .pokemon-card-img-container {
-        height: 370px;
-        width: 100%;
+        height: 200px;
     }
 
     .pokemon-card-img {
         height: 200px;
-        width: calc(100% - 100px);
+        width: calc(100% - 110px);
     }
 }
 
 @media (max-width: 375px) {
-    /* .pokemon-showcase {
-        max-height: 200px;
-        max-width: 150px;
-        margin-bottom: 20px;
-    } */
-
     .pokemon-showcase-header {
         padding: 5px 0 0 5px;
         gap: 20px;
@@ -312,8 +304,8 @@
     }
 
     .container-pokemon-card {
-        height: 640px;
-        width: 300px;
+        height: 540px;
+        width: 250px;
         top: 50%;
     }
 
@@ -323,18 +315,13 @@
     }
 
     .pokemon-card-title {
-        font-size: 20px;
+        font-size: 16px;
         font-weight: 600;
-    }
-
-    .pokemon-card-img-container {
-        height: 270px;
-        width: 100%;
     }
 
     .pokemon-card-img {
         height: 200px;
-        width: calc(100% - 100px);
+        width: calc(100% - 110px);
     }
 
     .container-statistics {
@@ -346,4 +333,25 @@
         font-size: 16px;
     }
 
+    .pokemon-card-img-container {
+        /* height: 150px; */
+        /* width: 100%; */
+    }
+
+    .pokemon-card-img {
+        height: 100%;
+        width: calc(100% - 70px);
+    }
+    .button-switch {
+        height: 30px;
+        width: 30px;
+    }
+    .close-button {
+        height: 25px;
+        width: 25px;
+    }
+    .close-button-img {
+        height: 25px;
+        width: 25px;
+    }
 }

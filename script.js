@@ -1,11 +1,3 @@
-const POKEMON_BASE_URL = "https://pokeapi.co/api/v2/";
-const POKEMON_IMG_URL = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
-let pokemonData = [];
-
-let pokemonStartValue = 0;
-let pokemonLimitValue = 5;
-const pokemonLimit = 1025;
-
 async function init() {
     startLoadingSpinner();
     try {
@@ -26,7 +18,10 @@ async function getPokemonData() {
         pokemonData.push({
             id: pokemonDataToJson.id,
             name: pokemonDataToJson.name,
-            types: pokemonDataToJson.types
+            types: pokemonDataToJson.types,
+            image: `${POKEMON_IMG_URL}${pokemonIndex + 1}.png`,
+            statistics: pokemonDataToJson.stats,
+            found: true
         });
     }
 }
@@ -40,21 +35,18 @@ async function renderPokemonShowcase() {
     document.getElementById('pokemon_showcase').insertAdjacentHTML('beforeend', html);
     for (let index = pokemonStartValue; index < pokemonLimitValue; index++) {
         if (!pokemonData[index] || !pokemonData[index].types) continue;
-        for (let typeIndex = 0; typeIndex < pokemonData[index].types.length; typeIndex++) {            
-            if (document.getElementById(`type_icon${typeIndex + 1}_${index}`)) {
-                document.getElementById(`type_icon${typeIndex + 1}_${index}`).src = `./img/${pokemonData[index].types[typeIndex].type.name}.svg`;
-            }
+        for (let typeIndex = 0; typeIndex < pokemonData[index].types.length; typeIndex++) {
+            document.getElementById(`type_icon${typeIndex + 1}_${index}`).src = `./img/${pokemonData[index].types[typeIndex].type.name}.svg`;
         }
         if (!pokemonData[index].types[1]) {
-            const secondType = document.getElementById(`type_icon2_${index}`);
-            if (secondType) secondType.classList.add('d-none');
+            document.getElementById(`type_icon2_${index}`).classList.add('d-none');
         }
     }
 }
 
 async function loadMorePokemon() {
-    pokemonStartValue += 5;
-    pokemonLimitValue = Math.min(pokemonLimitValue + 5, pokemonLimit);
+    pokemonStartValue += 40;
+    pokemonLimitValue = Math.min(pokemonLimitValue + 40, pokemonLimit);
     startLoadingSpinner();
     setTimeout(async () => {
         await getPokemonData();
@@ -65,29 +57,26 @@ async function loadMorePokemon() {
     }, 2000);
 }
 
-async function generateElementPokemonShowcases() {
+async function loadPokemonInformations(pokemonIndex, pokemonData) {
+    setPokemonInformations(pokemonIndex, pokemonData);
     for (let index = pokemonStartValue; index < pokemonLimitValue; index++) {
-
+        if (!pokemonData[index] || !pokemonData[index].types) continue;
+        for (let typeIndex = 0; typeIndex < pokemonData[index].types.length; typeIndex++) {
+            document.getElementById(`type_icon${typeIndex + 1}_${index}`).src = `./img/${pokemonData[index].types[typeIndex].type.name}.svg`;
+        }
+        if (!pokemonData[index].types[1]) {
+            document.getElementById(`type_icon2_${index}`).classList.add('d-none');
+        }
     }
 }
 
-async function loadPokemonInformations(pokemonIndex, pokemonData) {
+function setPokemonInformations(pokemonIndex, pokemonData) {
     document.getElementById(`pokemon_id${pokemonIndex}`).innerText = `#${convertPokemonId(pokemonData)}`;
     document.getElementById(`showcase_id${pokemonIndex}`).setAttribute("data-id", `card ${pokemonData.id}`);
     document.getElementById(`pokemon_name${pokemonIndex}`).innerText = pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1);
     document.getElementById(`pokemon_image${pokemonIndex}`).setAttribute("alt", "pokemon image " + pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1));
     document.getElementById(`pokemon_image${pokemonIndex}`).src = `${POKEMON_IMG_URL}${pokemonData.id}.png`;
     document.getElementById(`showcase_img${pokemonIndex}`).classList.add(pokemonData.types[0].type.name);
-
-    for (let typeIndex = 0; typeIndex < pokemonData.types.length; typeIndex++) {
-        let pokemonTypeIcon = pokemonData.types[typeIndex].type.name;
-        document.getElementById(`type_icon${typeIndex + 1}_${pokemonIndex}`).src = `./img/${pokemonTypeIcon}.svg`;
-        document.getElementById(`type_icon${typeIndex + 1}_${pokemonIndex}`).setAttribute("alt", "pokemon type " + pokemonTypeIcon);
-
-        if (!pokemonData.types[1]) {
-            document.getElementById(`type_icon2_${pokemonIndex}`).classList.add("d-none");
-        }
-    }
 }
 
 function startLoadingSpinner() {
@@ -110,103 +99,34 @@ function convertPokemonId(pokemonData) {
     }
 }
 
-function openPokemonCard(pokemonIndex) {
-    loadPokemonCardData(pokemonIndex);
-    loadPokemonCardStats(pokemonIndex);
-    currentPokemonIndex = pokemonIndex;
-
-    setTimeout(() => {
-        document.getElementById('pokemon_card').showModal();
-        document.getElementById('body').classList.add("no-scroll");
-    }, 100);
-}
-
-function loadPokemonCardData(pokemonIndex) {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let response = await fetch(POKEMON_BASE_URL + "pokemon/" + (pokemonIndex + 1));
-            let pokemon = await response.json();
-            addPokemonCardData(pokemon)
-            resolve();
-        } catch (error) {
-            reject(error);
-        }
-    });
-}
-
-function loadPokemonCardStats(pokemonIndex) {
-    const statElements = ['hp_progress', 'attack_progress', 'defense_progress', 'special_attack_progress', 'special_defense_progress', 'speed_progress'];
-    return new Promise(async (resolve, reject) => {
-        try {
-            let response = await fetch(POKEMON_BASE_URL + "pokemon/" + (pokemonIndex + 1));
-            let pokemon = await response.json();
-            statElements.forEach((stat, index) => {
-                document.getElementById(stat).style.width = `${pokemon.stats[index].base_stat}% `;
-                document.getElementById(stat).innerText = `${pokemon.stats[index].base_stat} `;
-            });
-            resolve();
-        } catch (error) {
-            reject(error);
-        }
-    });
-}
-
-function previousPokemon() {
-    if (currentPokemonIndex <= 0) {
-        currentPokemonIndex = 1024;
-    } else {
-        currentPokemonIndex--;
-    }
-    loadPokemonCardData(currentPokemonIndex);
-    loadPokemonCardStats(currentPokemonIndex);
-}
-
-function nextPokemon() {
-    if (currentPokemonIndex == 1024) {
-        currentPokemonIndex = 0;
-    } else {
-        currentPokemonIndex++;
-    }
-    loadPokemonCardData(currentPokemonIndex);
-    loadPokemonCardStats(currentPokemonIndex);
-}
-
-function closePokemonCard() {
-    document.getElementById('pokemon_card').close();
-    document.getElementById('body').classList.remove("no-scroll");
-}
-
 async function searchPokemon() {
     startLoadingSpinner();
-    const searchInputElement = document.getElementById('search_input');
-    const searchInput = searchInputElement.value.toLowerCase().trim();
     let found = false;
-    if (searchInput.length < 3) {
-        inputError(searchInputElement);
-        return document.getElementById('load_more_button').classList.add('d-none');
-    }
+    if (document.getElementById('search_input').value.toLowerCase().trim().length < 3) {
+        return inputError(document.getElementById('search_input'));;}
     for (let searchIndex = 0; searchIndex < pokemonLimitValue; searchIndex++) {
-        const card = document.getElementById('showcase_id' + searchIndex);
-        const pokemon = document.getElementById('pokemon_name' + searchIndex);
-        if (pokemon.textContent.toLowerCase().trim().includes(searchInput)) {
+        if (document.getElementById('pokemon_name' + searchIndex).textContent.toLowerCase().trim().includes(document.getElementById('search_input').value.toLowerCase().trim())) {
             found = true;
-            card.classList.remove('d-none');
-            document.getElementById('load_more_button').classList.add('d-none');
-            document.getElementById('reload_page').classList.remove('d-none');
+            searchedPokemonFound(searchIndex);
         } else {
-            card.classList.add('d-none');
-        }
-    }
+            document.getElementById('showcase_id' + searchIndex).classList.add('d-none');
+            pokemonData[searchIndex].found = false;}}
     if (!found) {
-        return pokemonNotFound();
-    }
+        return pokemonNotFound();}
     stopLoadingSpinner();
     document.getElementById('load_more_button').classList.add('d-none');
 }
 
+function searchedPokemonFound(searchIndex) {
+    document.getElementById('no_found').classList.add('d-none');
+    document.getElementById('showcase_id' + searchIndex).classList.remove('d-none');
+    document.getElementById('load_more_button').classList.add('d-none');
+    document.getElementById('reload_page_button').classList.remove('d-none');
+}
+
 function pokemonNotFound() {
-    document.getElementById('pokemon_showcase').innerHTML = '<p class="no-found">No Pokémon found</p>';
-    document.getElementById('reload_page').classList.remove('d-none');
+    document.getElementById('no_found').classList.remove('d-none');
+    document.getElementById('reload_page_button').classList.remove('d-none');
     document.getElementById('load_more_button').classList.add('d-none');
     document.getElementById('loading_spinner').classList.add('d-none');
 }
@@ -217,13 +137,14 @@ function inputError(searchInputElement) {
     stopLoadingSpinner();
 }
 
-function reloadPage() {
-    pokemonStartValue = 0;
-    pokemonLimitValue = 40;
-    document.getElementById('pokemon_showcase').innerHTML = "";
+async function reloadPage() {
+    document.getElementById('load_more_button').classList.remove('d-none');
+    document.getElementById('no_found').classList.add('d-none');
     document.getElementById('search_input').value = "";
-    document.getElementById('reload_page').classList.add('d-none');
-    init();
+    document.getElementById('reload_page_button').classList.add('d-none');
+    for (let index = 0; index < pokemonLimitValue; index++) {
+        document.getElementById('showcase_id' + index).classList.remove('d-none');
+    }
 }
 
 function generateSearchingPokemonInformation(searchIndex, pokemonName, pokemonId, data) {
@@ -248,25 +169,4 @@ function hideOtherPokemons(searchIndex) {
 
 function generateSearchingPokemon(searchIndex) {
     document.getElementById('pokemon_showcase').innerHTML += elementsGenerateShowcase(searchIndex);
-}
-
-function addPokemonCardData(pokemon) {
-    document.getElementById('pokemon_card_id').innerText = `#${convertPokemonId(pokemon)} `;
-    document.getElementById('pokemon_card_name').innerText = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
-    document.getElementById('pokemon_card_image').src = POKEMON_IMG_URL + pokemon.id + ".png";
-    document.getElementById('card_image').classList.add(pokemon.types[0].type.name);
-    document.getElementById('card_image').classList.replace(document.getElementById('card_image').classList[2], pokemon.types[0].type.name);
-    document.getElementById(`card_type_icon1_0`).setAttribute("alt", "pokemon type " + pokemon.types[0].type.name);
-    document.getElementById(`card_type_icon2_1`).setAttribute("alt", "pokemon type " + pokemon.types[1].type.name);
-    if (pokemon.types.length >= 2) {
-        document.getElementById(`card_type_icon1_0`).src = `./img/${pokemon.types[0].type.name}.svg`;
-        document.getElementById(`card_type_icon2_1`).src = `./img/${pokemon.types[1].type.name}.svg`;
-        document.getElementById(`card_type_icon2_1`).classList.remove('d-none');
-        return
-    }
-    if (pokemon.types.length = 1) {
-        document.getElementById(`card_type_icon1_0`).src = `./img/${pokemon.types[0].type.name}.svg`;
-        document.getElementById(`card_type_icon2_1`).classList.add('d-none');
-        return
-    }
 }

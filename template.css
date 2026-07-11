@@ -8,30 +8,25 @@ header {
 .container-header-left {
     display: flex;
     align-items: center;
-    gap: 50px;
-    height: 150px;
+    height: 100%;
     position: relative;
-    overflow: hidden;
 }
 
-.header-logo {
-    width: 400px;
-    padding-top: 180px;
-    rotate: 345deg;
+a {
+    text-decoration: none !important;
 }
 
 .container-header-title {
     height: 100%;
     display: flex;
     align-items: end;
-    padding-bottom: 50px;
 }
 
 .header-title {
     display: flex;
     gap: 90px;
     margin: 0;
-    padding: 0 50px;
+    /* padding: 0 50px; */
     font-size: 80px;
     color: black;
     transform: translateY(10px);
@@ -41,54 +36,16 @@ header {
 
 .header-title-icon {
     position: absolute;
-    left: 100px;
+    left: 50px;
     height: 100px;
     width: 100px;
     transform: translate(0px, 0px);
 }
-.header-title-icon > img {
+
+.header-title-icon>img {
     left: 75px;
     height: 100%;
     width: 100%;
-    transform: translate(0px, 0px);
-
-    animation: bounce 2s linear 0s;
-}
-
-@keyframes bounce {
-    0% {
-        transform: translate(0px, -50px);
-    }
-    10% {
-        transform: translate(0px, -40px);
-    }
-    20% {
-        transform: translate(0px, 0px);
-    }
-    30% {
-        transform: translate(0px, -30px);
-    }
-    40% {
-        transform: translate(0px, 0px);
-    }
-    50% {
-        transform: translate(0px, -20px);
-    }
-    60% {
-        transform: translate(0px, 0px);
-    }
-    70% {
-        transform: translate(0px, -10px);
-    }
-    80% {
-        transform: translate(0px, 0px);
-    }
-    90% {
-        transform: translate(0px, -5px);
-    }
-    100% {
-        transform: translate(0px, 0px);
-    }
 }
 
 .container-header-search {
@@ -253,10 +210,18 @@ footer {
         font-weight: bold;
         font-size: 12px;
     }
+}
 
-
+@media (max-width: 650px) {
     .header-title {
-        display: none;
+        font-size: 50px;
+        gap: 55px;
+    }
+
+    .header-title-icon {
+        height: auto;
+        width: 60px;
+        left: 30px;
     }
 }
 
@@ -285,6 +250,18 @@ footer {
     input::placeholder {
         font-weight: normal;
         font-size: 10px;
+    }
+
+    .header-title {
+        font-size: 25px;
+        gap: 35px;
+        /* padding-bottom: 50px; */
+    }
+
+    .header-title-icon {
+        height: auto;
+        width: 35px;
+        left: 16px;
     }
 }
 
