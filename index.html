@@ -52,12 +52,13 @@
         </header>
         <main data-id="content">
             <ul class="container-pokemon-showcase content-limit" id="pokemon_showcase">
-                <p id="no_found" class="no-found d-none">No Pokémon found</p>
+                
             </ul>
             <div id="loading_spinner" data-id="loading-spinner" class="container-loading-spinner df-c-c">
                 <img class="loading-spinner" src="./img/pokeball-icon.png" alt="">
             </div>
-            <div data-id="load-more-button" class="container-load-more-button">
+            <div data-id="load-more-button" class="extras">
+                <div id="error_content"></div>
                 <button data-id="load-more-button" aria-controls="load-more-pokemon-button" class="load-more-button"
                     onclick="loadMorePokemon()" id="load_more_button">Load more</button>
                 <button data-id="reload-page-button" aria-controls="reload-page-button" class="load-more-button d-none"

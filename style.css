@@ -99,11 +99,11 @@
     width: 38px;
 }
 
-.container-load-more-button {
-    height: 35px;
-    width: 135px;
+.extras {
     padding-bottom: 20px;
+    gap: 50px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
