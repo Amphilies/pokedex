@@ -118,7 +118,6 @@ async function searchPokemon() {
 }
 
 function searchedPokemonFound(searchIndex) {
-    document.getElementById('no_found').classList.add('d-none');
     document.getElementById('showcase_id' + searchIndex).classList.remove('d-none');
     document.getElementById('load_more_button').classList.add('d-none');
     document.getElementById('reload_page_button').classList.remove('d-none');
