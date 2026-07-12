@@ -48,13 +48,10 @@ async function loadMorePokemon() {
     pokemonStartValue += 40;
     pokemonLimitValue = Math.min(pokemonLimitValue + 40, pokemonLimit);
     startLoadingSpinner();
-    setTimeout(async () => {
-        await getPokemonData();
-        await renderPokemonShowcase();
-        setTimeout(() => {
-            stopLoadingSpinner();
-        }, 1000);
-    }, 2000);
+    await getPokemonData();
+    await renderPokemonShowcase();
+    stopLoadingSpinner();
+
 }
 
 async function loadPokemonInformations(pokemonIndex, pokemonData) {
@@ -103,22 +100,26 @@ async function searchPokemon() {
     startLoadingSpinner();
     let found = false;
     if (document.getElementById('search_input').value.toLowerCase().trim().length < 3) {
-        return inputError(document.getElementById('search_input'));;}
+        return inputError(document.getElementById('search_input'));;
+    }
     for (let searchIndex = 0; searchIndex < pokemonLimitValue; searchIndex++) {
         if (document.getElementById('pokemon_name' + searchIndex).textContent.toLowerCase().trim().includes(document.getElementById('search_input').value.toLowerCase().trim())) {
             found = true;
             searchedPokemonFound(searchIndex);
         } else {
             document.getElementById('showcase_id' + searchIndex).classList.add('d-none');
-            pokemonData[searchIndex].found = false;}}
+            pokemonData[searchIndex].found = false;
+        }
+    }
     if (!found) {
-        return pokemonNotFound();}
+        return pokemonNotFound();
+    }
     stopLoadingSpinner();
     document.getElementById('load_more_button').classList.add('d-none');
 }
 
 function searchedPokemonFound(searchIndex) {
-    document.getElementById('no_found').classList.add('d-none');
+    document.getElementById('error_content').innerHTML = `<p data-id="not-found" id="no_found" class="no-found d-none">No Pokémon found</p>`;
     document.getElementById('showcase_id' + searchIndex).classList.remove('d-none');
     document.getElementById('load_more_button').classList.add('d-none');
     document.getElementById('reload_page_button').classList.remove('d-none');
@@ -171,3 +172,4 @@ function hideOtherPokemons(searchIndex) {
 function generateSearchingPokemon(searchIndex) {
     document.getElementById('pokemon_showcase').innerHTML += elementsGenerateShowcase(searchIndex);
 }
+

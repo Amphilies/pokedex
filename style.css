@@ -100,7 +100,9 @@
 }
 
 .extras {
-    padding-bottom: 20px;
+    height: 100px;
+    width: 200px;
+    padding-bottom: 40px;
     gap: 50px;
     display: flex;
     flex-direction: column;
@@ -125,7 +127,7 @@
 }
 
 .load-more-button:hover {
-    height: 35px;
+    min-height: 35px;
     width: 135px;
 }
 

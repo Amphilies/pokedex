@@ -5,11 +5,8 @@ function openPokemonCard(pokemonIndex) {
     } catch (error) {
         console.error("Error opening Pokémon card:", error);
     }
-
-    setTimeout(() => {
-        document.getElementById('pokemon_card').showModal();
-        document.getElementById('body').classList.add("no-scroll");
-    }, 100);
+    document.getElementById('pokemon_card').showModal();
+    document.getElementById('body').classList.add("no-scroll");
     currentPokemonIndex = pokemonIndex;
 }
 
