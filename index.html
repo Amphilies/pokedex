@@ -39,10 +39,10 @@
                     <div class="designed-search-field">
                         <input data-id="search-input" id="search_input" class="search-field" type="search"
                             placeholder="Search by Name" required>
-                        <button data-id="search-button" aria-controls="search-button" onclick="searchPokemon()"
+                        <button data-id="search-button" aria-label="Search Pokemon" aria-controls="search-button" onclick="searchPokemon()"
                             class="search-button"></button>
                     </div>
-                    <button data-id="search-button" aria-controls="search-button" onclick="searchPokemon()"
+                    <button data-id="search-button" aria-label="Search Pokemon" aria-controls="search-button" onclick="searchPokemon()"
                         class="container-search-button-responsive">
                         <img class="search-img-responsive" src="./img/removebackground1775382129381.png" alt="">
                         <p class="search-button-responsive">Search</p>
@@ -59,9 +59,9 @@
             </div>
             <div id="error_content"></div>
             <div class="extras">
-                <button data-id="load-more-button" aria-controls="load-more-pokemon-button" class="load-more-button"
+                <button data-id="load-more-button" aria-label="Load more Pokémon" aria-controls="load-more-pokemon-button" class="load-more-button"
                     onclick="loadMorePokemon()" id="load_more_button">Load more</button>
-                <button data-id="reload-page-button" aria-controls="reload-page-button" class="load-more-button d-none"
+                <button data-id="reload-page-button" aria-label="Go back" aria-controls="reload-page-button" class="load-more-button d-none"
                     onclick="reloadPage()" id="reload_page_button">Go back</button>
             </div>
             <dialog data-id="dialog" onclick="closePokemonCard()" id="pokemon_card" class="pokemon-card">
@@ -69,17 +69,17 @@
                     <div class="pokemon-card-header df-spb-c">
                         <div class="pokemon-card-title" id="pokemon_card_id"></div>
                         <div class="pokemon-card-title" id="pokemon_card_name"></div>
-                        <button data-id="close-dialog-button" class="close-button" aria-controls="close-pokemon-button" onclick="closePokemonCard()">
+                        <button data-id="close-dialog-button" class="close-button" aria-label="Close Pokémon card" aria-controls="close-pokemon-button" onclick="closePokemonCard()">
                             <img class="close-button-img" src="./img/close.png" alt="">
                         </button>
                     </div>
                     <div data-id="card-image" id="card_image" class="">
-                        <button data-id="prev-button" onclick="previousPokemon()" class="button-switch" aria-controls="previous-button"
+                        <button data-id="prev-button" onclick="previousPokemon()" class="button-switch" aria-label="Previous Pokémon" aria-controls="previous-button"
                             id="previous_button">
                             <img class="button-switch switch-pokemon-rotated"
                                 src="./img/arrow.png" alt=""></button>
                         <img data-id="dialog-image" id="pokemon_card_image" class="pokemon-card-img" src="" alt="">
-                        <button data-id="next-button" onclick="nextPokemon()" class="button-switch" aria-controls="next-button"
+                        <button data-id="next-button" onclick="nextPokemon()" class="button-switch" aria-label="Next Pokémon" aria-controls="next-button"
                             id="next_button">
                             <img class="button-switch" src="./img/arrow.png" alt=""></button>
                     </div>

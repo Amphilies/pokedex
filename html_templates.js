@@ -6,7 +6,7 @@ function elementsGenerateShowcase(pokemonIndex, pokemonImage, pokemonData) {
                     <h3 class="pokemon-title" id="pokemon_name${pokemonIndex}">${pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1)}</h3>
                     <div class="pokemon-id"></div>
                 </div>
-                <button data-id="card" id="showcase_img${pokemonIndex}" onclick="openPokemonCard(${pokemonIndex})" class="pokemon-showcase-img-container df-c-c ${pokemonData.types[0].type.name}">
+                <button data-id="card" id="showcase_img${pokemonIndex}" onclick="openPokemonCard(${pokemonIndex})" class="pokemon-showcase-img-container df-c-c ${pokemonData.types[0].type.name}" aria-label="Open pokemoncard ${pokemonData.name}"
                     <img data-id="card-image" id="pokemon_image${pokemonIndex}" src="${pokemonImage}" class="pokemon-showcase-img" alt="Pokemon ${pokemonData.name}">
                 </button>
                 <div class="df-spa-c pokemon-showcase-type-container">
