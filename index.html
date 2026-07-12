@@ -24,7 +24,7 @@
 <body id="body" onload="init()">
     <div class="site">
         <header>
-            <div class="df-spb-c content-limit">
+            <div class="df-spb-c header-small content-limit">
                 <div class="container-header-left">
                     <a href="./index.html">
                         <div class="container-header-title">
@@ -62,7 +62,7 @@
                 <button data-id="load-more-button" aria-controls="load-more-pokemon-button" class="load-more-button"
                     onclick="loadMorePokemon()" id="load_more_button">Load more</button>
                 <button data-id="reload-page-button" aria-controls="reload-page-button" class="load-more-button d-none"
-                    onclick="reloadPage()" id="reload_page_button">Reload page</button>
+                    onclick="reloadPage()" id="reload_page_button">Go back</button>
             </div>
             <dialog data-id="dialog" onclick="closePokemonCard()" id="pokemon_card" class="pokemon-card">
                 <div data-id="overlay-pokemon-name" onclick="event.stopPropagation()" class="container-pokemon-card">
@@ -73,7 +73,7 @@
                             <img class="close-button-img" src="./img/close.png" alt="">
                         </button>
                     </div>
-                    <div data-id="card-image" id="card_image" class="df-c-c pokemon-card-img-container">
+                    <div data-id="card-image" id="card_image" class="">
                         <button data-id="prev-button" onclick="previousPokemon()" class="button-switch" aria-controls="previous-button"
                             id="previous_button">
                             <img class="button-switch switch-pokemon-rotated"
